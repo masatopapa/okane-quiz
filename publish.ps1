@@ -1,4 +1,4 @@
-# おかねクイズ大会を GitHub Pages に公開する（手動用）
+﻿# おかねクイズ大会を GitHub Pages に公開する（手動用）
 #   1) _build\お金のクイズ大会\fetch_rates.py で為替を更新（失敗しても続行）
 #   2) merge.py --write で問題データを検証・結合し index.html を作り直す
 #   3) commit → push（1分ほどで https://masatopapa.github.io/okane-quiz/ に反映。
