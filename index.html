@@ -344,6 +344,7 @@
     display: block; margin-bottom: .15rem;
     font-family: var(--display); font-weight: 900; font-size: .78rem; letter-spacing: .1em; color: var(--blue-deep);
   }
+  html[data-mode="2"] .verdict__exp::before { content: "解説"; }
   .verdict__exp .exp-mascot { position: absolute; left: .7rem; top: .8rem; width: 2.3rem; height: 2.3rem; }
   .verdict .btn { margin-top: 1rem; }
 
@@ -462,7 +463,7 @@
     <svg class="mast__mascot" aria-hidden="true"><use href="#coin-face"/></svg>
     <div class="mast__text">
       <h1 class="mast__title">おかね<em>クイズ</em>大会</h1>
-      <p class="mast__sub">マネリテDAOのお金の授業から｜1回10もん</p>
+      <p class="mast__sub" data-t="sub">マネリテDAOのお金の授業から｜1回10もん</p>
     </div>
     <div class="mast__tools">
       <button id="btnRuby" class="tool" type="button" aria-pressed="true" title="ふりがなの表示を切りかえる">ふりがな</button>
@@ -473,11 +474,11 @@
   <section id="start" class="card start">
     <div class="start__hero">
       <div>
-        <p class="eyebrow">もんだいは ぜんぶで</p>
-        <p class="start__count"><span id="poolCount">0</span><span class="unit">もん</span></p>
+        <p class="eyebrow" data-t="total">もんだいは ぜんぶで</p>
+        <p class="start__count"><span id="poolCount">0</span><span class="unit" data-t="mon">もん</span></p>
         <div class="level" role="group" aria-label="レベル">
-          <button class="level__btn is-on" type="button" data-lv="1">しょうがくせい</button>
-          <button class="level__btn" type="button" data-lv="2">ぜんぶ（おとなの もんだいも）</button>
+          <button class="level__btn is-on" type="button" data-lv="1" data-t="lv1">しょうがくせい</button>
+          <button class="level__btn" type="button" data-lv="2" data-t="lv2">ぜんぶ（おとなの もんだいも）</button>
         </div>
       </div>
       <svg class="start__pig" viewBox="0 0 170 140" aria-hidden="true">
@@ -498,12 +499,12 @@
       </svg>
     </div>
     <ul class="cats" id="catList"></ul>
-    <p class="start__rule">1回に <strong>10もん</strong> をランダムに出します。1もん <strong>10てん</strong>、100てんまんてん。こたえをえらぶと、すぐに「せいかい」と「かいせつ」が出るよ。</p>
+    <p class="start__rule" data-t="rule">1回に <strong>10もん</strong> をランダムに出します。1もん <strong>10てん</strong>、100てんまんてん。こたえをえらぶと、すぐに「せいかい」と「かいせつ」が出るよ。</p>
     <p class="start__fx" id="fxLine" hidden></p>
     <p class="start__last" id="lastScore" hidden></p>
-    <button id="btnStart" class="btn btn--primary" type="button">10もんに ちょうせん！</button>
+    <button id="btnStart" class="btn btn--primary" type="button" data-t="start">10もんに ちょうせん！</button>
     <div class="credit">
-      <p class="credit__note">まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id="buildDate"></span> 版</p>
+      <p class="credit__note" data-t="noteStart">まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id="buildDate"></span> 版</p>
       <a class="dao" href="https://monelite-dao.com/" target="_blank" rel="noopener" title="マネリテDAOのサイトをひらく（べつのタブ）"><svg role="img" aria-label="マネリテDAO"><use href="#dao-logo"/></svg></a>
     </div>
   </section>
@@ -539,29 +540,29 @@
     <div class="result__top">
       <svg class="result__mascot" aria-hidden="true"><use id="resultFace" href="#coin-face"/></svg>
       <div>
-        <p class="eyebrow">けっか</p>
+        <p class="eyebrow" data-t="result">けっか</p>
         <div class="stars" id="stars" aria-hidden="true"></div>
-        <p class="score"><span id="scoreNum">0</span><span class="unit">てん</span><span class="of">／100てん</span></p>
+        <p class="score"><span id="scoreNum">0</span><span class="unit" data-t="ten">てん</span><span class="of" data-t="of100">／100てん</span></p>
         <p class="score__sub" id="scoreSub"></p>
       </div>
     </div>
     <div class="stamp" id="stamp" aria-hidden="true"></div>
     <p class="result__line" id="resultLine"></p>
     <table class="cattable">
-      <thead><tr><th>ジャンル</th><th>出た数</th><th>せいかい</th></tr></thead>
+      <thead><tr><th data-t="thCat">ジャンル</th><th data-t="thN">出た数</th><th data-t="thOk">せいかい</th></tr></thead>
       <tbody id="catBody"></tbody>
     </table>
     <ol class="review" id="review"></ol>
-    <button id="btnAgain" class="btn btn--primary btn--coin" type="button">もういちど ちょうせん！</button>
-    <button id="btnHome" class="btn btn--ghost" type="button">さいしょに もどる</button>
+    <button id="btnAgain" class="btn btn--primary btn--coin" type="button" data-t="again">もういちど ちょうせん！</button>
+    <button id="btnHome" class="btn btn--ghost" type="button" data-t="home">さいしょに もどる</button>
     <div class="credit">
-      <p class="credit__note">てんすうは このスマホ・パソコンに記録されて、スタート画面の「まえは 〇てん」「じこベスト」に出ます。</p>
+      <p class="credit__note" data-t="noteResult">てんすうは このスマホ・パソコンに記録されて、スタート画面の「まえは 〇てん」「じこベスト」に出ます。</p>
       <a class="dao" href="https://monelite-dao.com/" target="_blank" rel="noopener" title="マネリテDAOのサイトをひらく（べつのタブ）"><svg role="img" aria-label="マネリテDAO"><use href="#dao-logo"/></svg></a>
     </div>
   </section>
 
   <footer class="foot">
-    <p>もんだいは、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。かいせつもそのスライドをもとに書いています。</p>
+    <p data-t="foot">もんだいは、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。かいせつもそのスライドをもとに書いています。</p>
     <p>数字（税金・金利・年金など）は作った当時のもので、あとから変わることがあります。</p>
   </footer>
 </div>
@@ -573,6 +574,8 @@
   const BUILD = "2026-09-14";
   const RATES0 = {"date": "2026-09-11", "USD": 154.04, "CHF": 188.93, "EUR": 178.56};   // ビルド時の為替（date, USD, CHF, EUR ＝ 1通貨あたりの円）
   const CATS = { 1: "せかいのお金", 2: "日本のお金", 3: "ぜいきん", 4: "ものの値段", 5: "銀行・ためる", 6: "ことわざ", 7: "はたらく・お給料" };
+  const CATS_A = { 1: "世界のお金", 2: "日本のお金", 3: "税金", 4: "ものの値段", 5: "銀行・貯める", 6: "ことわざ", 7: "働く・給料" };   // おとな向け表記
+  function catName(c) { return (LV === 2 ? CATS_A : CATS)[c] || ""; }
   const N = 10;
   const NUM = ["①", "②", "③", "④"];
   const LS = { seen: "okane_seen", hist: "okane_hist", lv: "okane_lv", ruby: "okane_ruby", sound: "okane_sound", rates: "okane_rates" };
@@ -638,8 +641,8 @@
     const el = $("fxLine");
     if (!hasRate("USD")) { el.hidden = true; return; }
     // スタート画面はドルだけ（スイスフランはラーメンの問題の解説にだけ出す）
-    const how = RATES.live ? "いま取ってきた最新の相場" : (RATES.cached ? "前回ネットで取った相場" : "もんだいデータを作ったときの相場");
-    el.innerHTML = `きょうの為替: <b>${esc(rateText("USD"))}</b>（${esc(fmtDate(RATES.date))}・${how}）。外国の値段の問題は、この日の相場で日本円に計算します。`;
+    const how = RATES.live ? t("fxLive") : (RATES.cached ? t("fxCached") : t("fxBuild"));
+    el.innerHTML = `${t("fxHead")}: <b>${esc(rateText("USD"))}</b>（${esc(fmtDate(RATES.date))}・${how}）。${t("fxTail")}`;
     el.hidden = false;
   }
   function liveRates() {
@@ -658,8 +661,74 @@
 
   // ---------- 設定（レベル・ふりがな・音） ----------
   let LV = loadLS(LS.lv, 1) === 2 ? 2 : 1;
-  let RUBY = loadLS(LS.ruby, true) !== false;
+  let RUBY_SET = loadLS(LS.ruby, null) !== null;                        // ふりがなボタンを一度でも押したか
+  let RUBY = RUBY_SET ? loadLS(LS.ruby, true) !== false : (LV === 1);    // 押していなければ、おとなモードでは自動でOFF
   let SOUND = loadLS(LS.sound, true) !== false;
+
+  // ---------- 画面の文言 [小学生向け, おとな向け] ----------
+  // 「ぜんぶ（おとなの もんだいも）」を選ぶと、ひらがな多めの表記をやめて漢字入りの普通の表記にする（本人指示 2026-09-14）。
+  // HTML側は data-t="キー" を付けた要素を applyMode() が書き換える。JSで組み立てる文は t("キー") を使う。
+  const TXT = {
+    sub:        ["マネリテDAOのお金の授業から｜1回10もん", "マネリテDAOのお金の授業から｜1回10問"],
+    total:      ["もんだいは ぜんぶで", "問題は 全部で"],
+    mon:        ["もん", "問"],
+    ten:        ["てん", "点"],
+    of100:      ["／100てん", "／100点"],
+    lv1:        ["しょうがくせい", "小学生"],
+    lv2:        ["ぜんぶ（おとなの もんだいも）", "全部（大人の問題も）"],
+    rule:       ["1回に <strong>10もん</strong> をランダムに出します。1もん <strong>10てん</strong>、100てんまんてん。こたえをえらぶと、すぐに「せいかい」と「かいせつ」が出るよ。",
+                 "1回に <strong>10問</strong> をランダムに出します。1問 <strong>10点</strong>、100点満点。答えを選ぶと、すぐに「正解」と「解説」が出ます。"],
+    start:      ["10もんに ちょうせん！", "10問に 挑戦！"],
+    noteStart:  ["まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id=\"buildDate\"></span> 版",
+                 "まだ出ていない問題から選ぶので、繰り返すと全部の問題に出会えます（このスマホ・パソコンに記録）。問題データ <span id=\"buildDate\"></span> 版"],
+    fxHead:     ["きょうの為替", "今日の為替"],
+    fxLive:     ["いま取ってきた最新の相場", "いま取得した最新の相場"],
+    fxCached:   ["前回ネットで取った相場", "前回ネットで取得した相場"],
+    fxBuild:    ["もんだいデータを作ったときの相場", "問題データを作ったときの相場"],
+    fxTail:     ["外国の値段の問題は、この日の相場で日本円に計算します。", "外国の値段の問題は、この日の相場で日本円に計算します。"],
+    last:       ["まえは {s}てん（{c}／{n}もん）　じこベスト {b}てん　ちょうせん {k}回", "前回 {s}点（{c}／{n}問）　自己ベスト {b}点　挑戦 {k}回"],
+    qnum:       ["だい<b>{i}</b>もん", "第<b>{i}</b>問"],
+    next:       ["つぎの もんだいへ", "次の問題へ"],
+    seeResult:  ["けっかを 見る", "結果を見る"],
+    ok:         ["せいかい！", "正解！"],
+    ng:         ["ざんねん…", "残念…"],
+    ansIs:      ["こたえは", "答えは"],
+    youPicked:  ["えらんだのは", "選んだのは"],
+    result:     ["けっか", "結果"],
+    scoreSub:   ["{n}もん中 {c}もん せいかい", "{n}問中 {c}問 正解"],
+    thCat:      ["ジャンル", "ジャンル"],
+    thN:        ["出た数", "出題数"],
+    thOk:       ["せいかい", "正解"],
+    labQ:       ["もんだい", "問題"],
+    labC:       ["せんたくし", "選択肢"],
+    labA:       ["こたえ", "答え"],
+    labE:       ["かいせつ", "解説"],
+    again:      ["もういちど ちょうせん！", "もう一度 挑戦！"],
+    home:       ["さいしょに もどる", "最初に戻る"],
+    noteResult: ["てんすうは このスマホ・パソコンに記録されて、スタート画面の「まえは 〇てん」「じこベスト」に出ます。", "点数はこのスマホ・パソコンに記録され、スタート画面の「前回 〇点」「自己ベスト」に出ます。"],
+    foot:       ["もんだいは、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。かいせつもそのスライドをもとに書いています。",
+                 "問題は、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。解説もそのスライドをもとに書いています。"],
+    sound:      ["おと", "音"],
+    mute:       ["おと なし", "音なし"],
+    stamp100:   ["パーフェクト", "パーフェクト"],
+    stamp70:    ["お金はかせ", "お金博士"],
+    stamp40:    ["けんきゅうちゅう", "研究中"],
+    stamp0:     ["つぎは がんばろう", "次は がんばろう"],
+    msg100:     ["パーフェクト！ きみは「お金はかせ」だ。おうちの人や友だちにも、今日しったことを教えてあげよう。", "パーフェクト！ 文句なしの「お金博士」です。今日知ったことを、家族や友だちにも話してみてください。"],
+    msg70:      ["すごい！ お金のことをよく知っているね。まちがえたもんだいは、下のかいせつを読んでおくと、つぎはパーフェクトがねらえるよ。", "すごい！ お金のことをよく知っていますね。間違えた問題は下の解説を読んでおくと、次はパーフェクトが狙えます。"],
+    msg40:      ["いいちょうし！ 知らなかったことを知るのが、お金にくわしくなるいちばんの近道。かいせつを読んだら、もういちどちょうせんしてみよう。", "いい調子！ 知らなかったことを知るのが、お金に詳しくなる一番の近道です。解説を読んだら、もう一度挑戦してみてください。"],
+    msg0:       ["だいじょうぶ！ 今日はじめて知ったことがたくさんあったね。下の ×のもんだいをひらいて、こたえとかいせつを読んでからもういちどやってみよう。", "大丈夫！ 今日初めて知ったことがたくさんあったはず。下の ×の問題を開いて、答えと解説を読んでからもう一度どうぞ。"]
+  };
+  function t(k, vars) {
+    let s = TXT[k][LV === 2 ? 1 : 0];
+    if (vars) for (const v in vars) s = s.split("{" + v + "}").join(vars[v]);
+    return s;
+  }
+  function applyMode() {
+    document.documentElement.dataset.mode = LV;   // CSS（「かいせつ」見出し）もこれで切り替わる
+    document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t(el.dataset.t); });
+    applySound();
+  }
 
   // 相場が無いときは為替連動の問題を出さない（ビルド時の相場を埋めてあるので通常は全問出る）
   function pool() { return BANK.filter(q => (LV === 2 || q.lv === 1) && (!q.fx || hasRate(q.fx.cur))); }
@@ -671,12 +740,14 @@
   function applySound() {
     $("btnSound").setAttribute("aria-pressed", SOUND ? "true" : "false");
     $("soundIcon").setAttribute("href", SOUND ? "#ic-sound" : "#ic-mute");
-    $("soundLabel").textContent = SOUND ? "おと" : "おと なし";
+    $("soundLabel").textContent = SOUND ? t("sound") : t("mute");
   }
-  $("btnRuby").addEventListener("click", () => { RUBY = !RUBY; saveLS(LS.ruby, RUBY); applyRuby(); });
+  $("btnRuby").addEventListener("click", () => { RUBY = !RUBY; RUBY_SET = true; saveLS(LS.ruby, RUBY); applyRuby(); });
   $("btnSound").addEventListener("click", () => { SOUND = !SOUND; saveLS(LS.sound, SOUND); applySound(); if (SOUND) sfx(true); });
   document.querySelectorAll(".level__btn").forEach(b => b.addEventListener("click", () => {
-    LV = Number(b.dataset.lv) === 2 ? 2 : 1; saveLS(LS.lv, LV); renderStart();
+    LV = Number(b.dataset.lv) === 2 ? 2 : 1; saveLS(LS.lv, LV);
+    if (!RUBY_SET) { RUBY = (LV === 1); applyRuby(); }   // 自分で切り替えたことが無ければ、レベルに合わせる
+    applyMode(); renderStart();
   }));
 
   // ---------- 出題 ----------
@@ -711,13 +782,13 @@
     const counts = {};
     P.forEach(q => { counts[q.cat] = (counts[q.cat] || 0) + 1; });
     $("catList").innerHTML = Object.keys(CATS).filter(c => counts[c]).map(c =>
-      `<li>${icon(c)}<span>${CATS[c]}</span><span class="n">${counts[c]}</span></li>`).join("");
+      `<li>${icon(c)}<span>${catName(c)}</span><span class="n">${counts[c]}</span></li>`).join("");
     renderRateLine();
     const hist = loadLS(LS.hist, []);
     if (Array.isArray(hist) && hist.length) {
       const last = hist[hist.length - 1];
       const best = Math.max(...hist.map(h => h.score));
-      $("lastScore").textContent = `まえは ${last.score}てん（${last.correct}／${N}もん）　じこベスト ${best}てん　ちょうせん ${hist.length}回`;
+      $("lastScore").textContent = t("last", { s: last.score, c: last.correct, n: N, b: best, k: hist.length });
       $("lastScore").hidden = false;
     } else {
       $("lastScore").hidden = true;
@@ -737,15 +808,15 @@
     const q = S.qs[S.i];
     const order = S.order[S.i];
     renderProgress();
-    $("qNum").innerHTML = `だい<b>${S.i + 1}</b>もん`;
-    $("qCat").innerHTML = `${icon(q.cat)}<span>${CATS[q.cat] || ""}</span>`;
+    $("qNum").innerHTML = t("qnum", { i: S.i + 1 });
+    $("qCat").innerHTML = `${icon(q.cat)}<span>${catName(q.cat)}</span>`;
     $("qText").innerHTML = rb(q.q);
     $("choices").innerHTML = order.map((orig, k) =>
       `<li><button class="choice" type="button" data-k="${k}"><span class="choice__n">${NUM[k]}</span><span class="choice__t">${rb(q.c[orig])}</span><span class="choice__m"></span></button></li>`).join("");
     $("choices").querySelectorAll(".choice").forEach(b => b.addEventListener("click", onAnswer));
     $("verdict").hidden = true;
     $("verdict").classList.remove("is-ok", "is-ng");
-    $("btnNext").textContent = (S.i === N - 1) ? "けっかを 見る" : "つぎの もんだいへ";
+    $("btnNext").textContent = (S.i === N - 1) ? t("seeResult") : t("next");
   }
 
   function onAnswer(ev) {
@@ -767,10 +838,10 @@
     $("markMaru").toggleAttribute("hidden", !ok);
     $("markBatsu").toggleAttribute("hidden", ok);
     redrawMarks();
-    $("vWord").textContent = ok ? "せいかい！" : "ざんねん…";
+    $("vWord").textContent = ok ? t("ok") : t("ng");
     $("vAns").innerHTML = ok
-      ? `こたえは <span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>`
-      : `こたえは <span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>　（えらんだのは ${NUM[k]}）`;
+      ? `${t("ansIs")} <span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>`
+      : `${t("ansIs")} <span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>　（${t("youPicked")} ${NUM[k]}）`;
     $("vExp").innerHTML = rb(q.e.split("\n").slice(1).join("\n"));
     v.hidden = false;
     renderProgress();
@@ -788,14 +859,10 @@
   }
 
   function rank(score) {
-    if (score === 100) return { stamp: "パーフェクト", stars: 3, ng: false, face: "#coin-wow",
-      msg: "パーフェクト！ きみは「お金はかせ」だ。おうちの人や友だちにも、今日しったことを教えてあげよう。" };
-    if (score >= 70) return { stamp: "お金はかせ", stars: 2, ng: false, face: "#coin-wow",
-      msg: "すごい！ お金のことをよく知っているね。まちがえたもんだいは、下のかいせつを読んでおくと、つぎはパーフェクトがねらえるよ。" };
-    if (score >= 40) return { stamp: "けんきゅうちゅう", stars: 1, ng: false, face: "#coin-face",
-      msg: "いいちょうし！ 知らなかったことを知るのが、お金にくわしくなるいちばんの近道。かいせつを読んだら、もういちどちょうせんしてみよう。" };
-    return { stamp: "つぎは がんばろう", stars: 0, ng: true, face: "#coin-hmm",
-      msg: "だいじょうぶ！ 今日はじめて知ったことがたくさんあったね。下の ×のもんだいをひらいて、こたえとかいせつを読んでからもういちどやってみよう。" };
+    if (score === 100) return { stamp: t("stamp100"), stars: 3, ng: false, face: "#coin-wow", msg: t("msg100") };
+    if (score >= 70) return { stamp: t("stamp70"), stars: 2, ng: false, face: "#coin-wow", msg: t("msg70") };
+    if (score >= 40) return { stamp: t("stamp40"), stars: 1, ng: false, face: "#coin-face", msg: t("msg40") };
+    return { stamp: t("stamp0"), stars: 0, ng: true, face: "#coin-hmm", msg: t("msg0") };
   }
 
   function finish() {
@@ -803,7 +870,7 @@
     const score = Math.round(correct * (100 / N));
     const r = rank(score);
     $("scoreNum").textContent = score;
-    $("scoreSub").textContent = `${N}もん中 ${correct}もん せいかい`;
+    $("scoreSub").textContent = t("scoreSub", { n: N, c: correct });
     $("stars").innerHTML = [0, 1, 2].map(i => `<svg class="${i < r.stars ? "on" : ""}"><use href="#star"></use></svg>`).join("");
     $("resultFace").setAttribute("href", r.face);
     const st = $("stamp");
@@ -818,7 +885,7 @@
     });
     $("catBody").innerHTML = Object.keys(CATS).filter(c => per[c]).map(c => {
       const p = per[c]; const pct = Math.round(p.ok / p.n * 100);
-      return `<tr><td>${icon(c)}${CATS[c]}</td><td>${p.n}もん</td><td>${p.ok}もん<span class="bar"><i style="width:${pct}%"></i></span></td></tr>`;
+      return `<tr><td>${icon(c)}${catName(c)}</td><td>${p.n}${t("mon")}</td><td>${p.ok}${t("mon")}<span class="bar"><i style="width:${pct}%"></i></span></td></tr>`;
     }).join("");
 
     $("review").innerHTML = S.qs.map((q, k) => {
@@ -827,12 +894,12 @@
       const kAns = order.indexOf(q.a);
       const kPicked = order.indexOf(a.picked);
       return `<li><details>
-        <summary><span class="r__n">${k + 1}</span><span class="r__m ${a.ok ? "ok" : "ng"}">${a.ok ? "○" : "×"}</span><span class="r__t">${rb(plain(q.q))}<small>${esc(CATS[q.cat] || "")}　${esc(q.src)}</small></span></summary>
+        <summary><span class="r__n">${k + 1}</span><span class="r__m ${a.ok ? "ok" : "ng"}">${a.ok ? "○" : "×"}</span><span class="r__t">${rb(plain(q.q))}<small>${esc(catName(q.cat))}　${esc(q.src)}</small></span></summary>
         <div class="r__body">
-          <p class="lab">もんだい</p><p>${rb(q.q)}</p>
-          <p class="lab">せんたくし</p>${order.map((orig, i) => `<p class="${i === kAns ? "right" : (i === kPicked ? "yours" : "")}">${NUM[i]} ${rb(q.c[orig])}</p>`).join("")}
-          <p class="lab">こたえ</p><p><span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>${a.ok ? "" : `　えらんだのは <span class="yours">${NUM[kPicked]} ${rb(q.c[a.picked])}</span>`}</p>
-          <p class="lab">かいせつ</p><p>${rb(q.e.split("\n").slice(1).join("\n"))}</p>
+          <p class="lab">${t("labQ")}</p><p>${rb(q.q)}</p>
+          <p class="lab">${t("labC")}</p>${order.map((orig, i) => `<p class="${i === kAns ? "right" : (i === kPicked ? "yours" : "")}">${NUM[i]} ${rb(q.c[orig])}</p>`).join("")}
+          <p class="lab">${t("labA")}</p><p><span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>${a.ok ? "" : `　${t("youPicked")} <span class="yours">${NUM[kPicked]} ${rb(q.c[a.picked])}</span>`}</p>
+          <p class="lab">${t("labE")}</p><p>${rb(q.e.split("\n").slice(1).join("\n"))}</p>
         </div></details></li>`;
     }).join("");
 
@@ -949,7 +1016,7 @@
   }
 
   applyRuby();
-  applySound();
+  applyMode();   // 文言（小学生向け／おとな向け）と音ボタンの表示
   renderStart();
   liveRates();
   if (new URLSearchParams(location.search).get("q")) start();
