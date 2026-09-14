@@ -231,7 +231,6 @@
   .start__rule strong { color: var(--coin-ink); font-family: var(--display); font-weight: 900; }
   .start__last { margin: .8rem 0 0; font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; font-family: var(--display); font-weight: 700; }
   .start .btn--primary { margin-top: 1.1rem; }
-  .start__note { margin: .9rem 0 0; font-size: .8rem; line-height: 1.7; color: var(--ink-faint); }
   .start__fx { margin: .6rem 0 0; font-size: .82rem; line-height: 1.7; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
   .start__fx b { font-family: var(--display); font-weight: 700; color: var(--blue-deep); }
 
@@ -241,9 +240,10 @@
   a.dao { transition: transform .12s ease; }
   a.dao:hover { transform: translateY(-2px) rotate(-4deg); }
   a.dao:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
-  .start__credit { display: flex; align-items: center; gap: .9rem; margin-top: .9rem; }
-  .start__credit .start__note { margin: 0; flex: 1; min-width: 0; }
-  .start__credit .dao { width: clamp(64px, 16vw, 78px); height: clamp(64px, 16vw, 78px); }
+  /* スタート画面・結果画面の一番下: 注記＋ロゴ（DAOサイトへのリンク） */
+  .credit { display: flex; align-items: center; gap: .9rem; margin-top: .9rem; }
+  .credit__note { margin: 0; flex: 1; min-width: 0; font-size: .8rem; line-height: 1.7; color: var(--ink-faint); }
+  .credit .dao { width: clamp(64px, 16vw, 78px); height: clamp(64px, 16vw, 78px); }
   .qmeta .dao { margin-left: auto; width: 46px; height: 46px; }
 
   /* ---------- progress (coins) ---------- */
@@ -502,8 +502,8 @@
     <p class="start__fx" id="fxLine" hidden></p>
     <p class="start__last" id="lastScore" hidden></p>
     <button id="btnStart" class="btn btn--primary" type="button">10もんに ちょうせん！</button>
-    <div class="start__credit">
-      <p class="start__note">まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id="buildDate"></span> 版</p>
+    <div class="credit">
+      <p class="credit__note">まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id="buildDate"></span> 版</p>
       <a class="dao" href="https://monelite-dao.com/" target="_blank" rel="noopener" title="マネリテDAOのサイトをひらく（べつのタブ）"><svg role="img" aria-label="マネリテDAO"><use href="#dao-logo"/></svg></a>
     </div>
   </section>
@@ -554,6 +554,10 @@
     <ol class="review" id="review"></ol>
     <button id="btnAgain" class="btn btn--primary btn--coin" type="button">もういちど ちょうせん！</button>
     <button id="btnHome" class="btn btn--ghost" type="button">さいしょに もどる</button>
+    <div class="credit">
+      <p class="credit__note">てんすうは このスマホ・パソコンに記録されて、スタート画面の「まえは 〇てん」「じこベスト」に出ます。</p>
+      <a class="dao" href="https://monelite-dao.com/" target="_blank" rel="noopener" title="マネリテDAOのサイトをひらく（べつのタブ）"><svg role="img" aria-label="マネリテDAO"><use href="#dao-logo"/></svg></a>
+    </div>
   </section>
 
   <footer class="foot">
