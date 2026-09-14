@@ -1,0 +1,16 @@
+{
+  "name": "おかねクイズ大会",
+  "short_name": "おかねクイズ",
+  "description": "マネリテDAOのお金の授業のクイズを、小学生向けの4択10問チャレンジにしたもの。ふりがな付き、1問ごとに解説。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#e8f3fb",
+  "theme_color": "#f6b93b",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
