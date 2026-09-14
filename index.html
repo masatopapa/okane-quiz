@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>おかねクイズ大会</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6b93b">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=BIZ+UDPGothic:wght@400;700&family=Baloo+2:wght@700;800&display=swap">
+<style>
+  :root {
+    --sky:        #e8f3fb;
+    --dot:        #ffffff;
+    --card:       #ffffff;
+    --card-2:     #f3f8fd;
+    --ink:        #2b3042;
+    --ink-soft:   #5b6178;
+    --ink-faint:  #8b91a8;
+    --edge:       #cddbe9;
+    --coin:       #f6b93b;
+    --coin-deep:  #d38a12;
+    --coin-soft:  #fff3d4;
+    --coin-ink:   #8a5a06;
+    --blue:       #3d8bdc;
+    --blue-deep:  #2b6bb0;
+    --blue-soft:  #e2effc;
+    --maru:       #ef5b70;
+    --maru-deep:  #c93d51;
+    --maru-soft:  #ffe6ea;
+    --batsu:      #4c78e0;
+    --batsu-soft: #e4ecfd;
+    --leaf:       #4fbd85;
+    --leaf-soft:  #e1f6ea;
+    --pig:        #f9a8b8;
+    --pig-2:      #f7c4cf;
+    --shadow:     0 12px 30px -20px rgba(43,48,66,.45);
+    --display: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    --sans:    "BIZ UDPGothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+    --num:     "Baloo 2", "Zen Maru Gothic", "Yu Gothic", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --sky:        #13202f;
+      --dot:        #1c2d40;
+      --card:       #1c2a3b;
+      --card-2:     #223449;
+      --ink:        #eef3f9;
+      --ink-soft:   #b3bdcc;
+      --ink-faint:  #7f8a9c;
+      --edge:       #34485f;
+      --coin:       #f2b644;
+      --coin-deep:  #b47611;
+      --coin-soft:  #3a2f16;
+      --coin-ink:   #ffd88a;
+      --blue:       #5a9ee8;
+      --blue-deep:  #3a76bd;
+      --blue-soft:  #1f3550;
+      --maru:       #ff7488;
+      --maru-deep:  #d9506a;
+      --maru-soft:  #3d2230;
+      --batsu:      #7c9ef0;
+      --batsu-soft: #22304f;
+      --leaf:       #5fcf95;
+      --leaf-soft:  #1e3a2c;
+      --pig:        #e88fa2;
+      --pig-2:      #f0aebd;
+      --shadow:     0 14px 34px -20px rgba(0,0,0,.8);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --sky:        #13202f;
+    --dot:        #1c2d40;
+    --card:       #1c2a3b;
+    --card-2:     #223449;
+    --ink:        #eef3f9;
+    --ink-soft:   #b3bdcc;
+    --ink-faint:  #7f8a9c;
+    --edge:       #34485f;
+    --coin:       #f2b644;
+    --coin-deep:  #b47611;
+    --coin-soft:  #3a2f16;
+    --coin-ink:   #ffd88a;
+    --blue:       #5a9ee8;
+    --blue-deep:  #3a76bd;
+    --blue-soft:  #1f3550;
+    --maru:       #ff7488;
+    --maru-deep:  #d9506a;
+    --maru-soft:  #3d2230;
+    --batsu:      #7c9ef0;
+    --batsu-soft: #22304f;
+    --leaf:       #5fcf95;
+    --leaf-soft:  #1e3a2c;
+    --pig:        #e88fa2;
+    --pig-2:      #f0aebd;
+    --shadow:     0 14px 34px -20px rgba(0,0,0,.8);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    padding: clamp(.9rem, 3vw, 2rem) clamp(.9rem, 3vw, 2rem) 4rem;
+    background-color: var(--sky);
+    background-image: radial-gradient(var(--dot) 1.6px, transparent 1.7px);
+    background-size: 22px 22px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+  }
+  .shell { width: 100%; max-width: 42rem; display: flex; flex-direction: column; gap: clamp(.9rem, 2.5vw, 1.3rem); }
+  button { font: inherit; color: inherit; }
+  button:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  /* ふりがな */
+  ruby { ruby-position: over; ruby-align: center; }
+  rt { font-size: .5em; font-weight: 500; color: var(--ink-soft); letter-spacing: 0; line-height: 1; }
+  .no-ruby rt { display: none; }
+
+  /* ---------- masthead ---------- */
+  .mast { display: flex; align-items: center; gap: .8rem; }
+  .mast__mascot { width: 68px; height: 68px; flex: none; filter: drop-shadow(0 3px 0 rgba(43,48,66,.18)); }
+  .mast__text { flex: 1; min-width: 0; }
+  .mast__title {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: .02em;
+    text-wrap: balance;
+  }
+  .mast__title em { font-style: normal; color: var(--coin-deep); }
+  .mast__sub { margin: .15rem 0 0; font-size: .8rem; color: var(--ink-soft); letter-spacing: .04em; }
+  .mast__tools { display: flex; gap: .4rem; flex: none; }
+  .tool {
+    display: inline-flex; align-items: center; gap: .3rem;
+    min-height: 2.2rem; padding: .2rem .7rem;
+    border: 2px solid var(--edge); border-radius: 999px;
+    background: var(--card); cursor: pointer;
+    font-family: var(--display); font-weight: 700; font-size: .8rem;
+    color: var(--ink-soft);
+    box-shadow: 0 2px 0 var(--edge);
+  }
+  .tool svg { width: 1.1rem; height: 1.1rem; }
+  .tool[aria-pressed="true"] { color: var(--blue-deep); border-color: var(--blue); box-shadow: 0 2px 0 var(--blue); }
+  .tool:active { transform: translateY(2px); box-shadow: none; }
+
+  /* ---------- card ---------- */
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 2px solid var(--edge);
+    border-radius: 22px;
+    box-shadow: 0 5px 0 var(--edge), var(--shadow);
+    padding: clamp(1.1rem, 4vw, 1.7rem);
+  }
+  .eyebrow {
+    margin: 0 0 .2rem;
+    font-family: var(--display); font-weight: 700;
+    font-size: .8rem; letter-spacing: .12em; color: var(--ink-faint);
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    min-height: 3.4rem; padding: .7rem 1.6rem;
+    border-radius: 999px; border: 0;
+    background: var(--blue); color: #fff;
+    font-family: var(--display); font-weight: 900; font-size: 1.15rem; letter-spacing: .04em;
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--blue-deep);
+    transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+  }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--blue-deep); }
+  .btn--primary { width: 100%; }
+  .btn--coin { background: var(--coin); color: var(--coin-ink); box-shadow: 0 5px 0 var(--coin-deep); }
+  .btn--coin:active { box-shadow: 0 1px 0 var(--coin-deep); }
+  .btn--ghost { width: 100%; background: var(--card); color: var(--ink-soft); border: 2px solid var(--edge); box-shadow: 0 4px 0 var(--edge); font-size: 1rem; }
+  .btn--ghost:active { box-shadow: 0 1px 0 var(--edge); }
+
+  /* ---------- start ---------- */
+  .start__hero { display: flex; align-items: flex-end; gap: 1rem; }
+  .start__hero > div:first-child { flex: 1; min-width: 0; }
+  .start__pig { width: clamp(120px, 32vw, 170px); flex: none; margin-right: -.2rem; margin-bottom: -.4rem; }
+  .start__count {
+    margin: 0; display: flex; align-items: baseline; gap: .25rem;
+    font-family: var(--num); font-weight: 800; font-size: 3.2rem; line-height: 1; color: var(--coin-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .start__count .unit { font-family: var(--display); font-weight: 900; font-size: 1.2rem; color: var(--ink); }
+  .level { display: flex; gap: .4rem; margin-top: .8rem; flex-wrap: wrap; }
+  .level__btn {
+    padding: .35rem .9rem; border-radius: 999px;
+    border: 2px solid var(--edge); background: var(--card);
+    font-family: var(--display); font-weight: 700; font-size: .88rem; color: var(--ink-soft);
+    cursor: pointer; box-shadow: 0 3px 0 var(--edge);
+  }
+  .level__btn.is-on { background: var(--coin-soft); border-color: var(--coin); color: var(--coin-ink); box-shadow: 0 3px 0 var(--coin-deep); }
+  .level__btn:active { transform: translateY(2px); box-shadow: none; }
+  .cats {
+    list-style: none; margin: 1rem 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: .45rem;
+  }
+  .cats li {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .4rem .7rem;
+    background: var(--card-2); border-radius: 12px;
+    font-size: .9rem; font-family: var(--display); font-weight: 700;
+  }
+  .cats li svg { width: 1.35rem; height: 1.35rem; flex: none; color: var(--blue); }
+  .cats li .n { margin-left: auto; font-family: var(--num); font-weight: 800; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .start__rule {
+    margin: 1rem 0 0; padding: .8rem 1rem;
+    background: var(--coin-soft); border-radius: 14px;
+    font-size: .95rem; line-height: 1.8;
+  }
+  .start__rule strong { color: var(--coin-ink); font-family: var(--display); font-weight: 900; }
+  .start__last { margin: .8rem 0 0; font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; font-family: var(--display); font-weight: 700; }
+  .start .btn--primary { margin-top: 1.1rem; }
+  .start__note { margin: .9rem 0 0; font-size: .8rem; line-height: 1.7; color: var(--ink-faint); }
+  .start__fx { margin: .6rem 0 0; font-size: .82rem; line-height: 1.7; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .start__fx b { font-family: var(--display); font-weight: 700; color: var(--blue-deep); }
+
+  /* ---------- progress (coins) ---------- */
+  .progress { display: grid; grid-template-columns: repeat(10, 1fr); gap: .35rem; padding: 0 .2rem; }
+  .progress span {
+    display: grid; place-items: center;
+    aspect-ratio: 1; border-radius: 50%;
+    border: 2px solid var(--edge); background: var(--card);
+    font-family: var(--display); font-weight: 900; font-size: .8rem; line-height: 1;
+    color: transparent;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .progress span.is-now { border-color: var(--coin); background: var(--coin-soft); animation: bob 1.1s ease-in-out infinite; }
+  .progress span.is-ok  { border-color: var(--coin-deep); background: var(--coin); color: #fff; }
+  .progress span.is-ok::after { content: "○"; }
+  .progress span.is-ng  { border-color: var(--batsu); background: var(--batsu-soft); color: var(--batsu); }
+  .progress span.is-ng::after { content: "×"; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+  /* ---------- question ---------- */
+  .qmeta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .7rem; margin-bottom: .7rem; }
+  .qmeta__num {
+    display: inline-flex; align-items: baseline; gap: .15rem;
+    font-family: var(--display); font-weight: 900; font-size: 1.05rem; color: var(--coin-ink);
+    background: var(--coin-soft); border-radius: 999px; padding: .15rem .8rem;
+  }
+  .qmeta__num b { font-family: var(--num); font-size: 1.35rem; font-weight: 800; line-height: 1; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    padding: .15rem .7rem .15rem .5rem;
+    border: 2px solid var(--blue-soft); background: var(--blue-soft); color: var(--blue-deep);
+    border-radius: 999px; font-family: var(--display); font-weight: 700; font-size: .82rem; white-space: nowrap;
+  }
+  .chip svg { width: 1.1rem; height: 1.1rem; }
+  .qtext {
+    margin: 0;
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(1.1rem, 3.6vw, 1.3rem);
+    line-height: 2;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+  }
+  .choices { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  @media (max-width: 520px) { .choices { grid-template-columns: 1fr; } }
+  .choice {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; gap: .65rem;
+    text-align: left; padding: .6rem .8rem .6rem .6rem;
+    border: 2px solid var(--edge); border-radius: 16px;
+    background: var(--card); cursor: pointer;
+    box-shadow: 0 4px 0 var(--edge);
+    line-height: 1.7;
+    transition: border-color .15s ease, background .15s ease, opacity .2s ease, transform .08s ease, box-shadow .08s ease;
+  }
+  .choice__n {
+    flex: none; width: 2.1rem; height: 2.1rem; display: grid; place-items: center;
+    border-radius: 50%; background: var(--coin-soft); color: var(--coin-ink);
+    font-family: var(--display); font-weight: 900; font-size: 1.05rem;
+  }
+  .choice__t { flex: 1; min-width: 0; font-weight: 700; font-size: 1rem; overflow-wrap: anywhere; }
+  .choice__m { flex: none; width: 0; overflow: hidden; font-family: var(--display); font-weight: 900; font-size: 1.5rem; line-height: 1; transition: width .15s ease; text-align: center; }
+  @media (hover: hover) {
+    .choice:not([disabled]):hover { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 4px 0 var(--blue); }
+  }
+  .choice:not([disabled]):active { transform: translateY(3px); box-shadow: 0 1px 0 var(--edge); }
+  .choice[disabled] { cursor: default; }
+  .choice.is-dim { opacity: .45; }
+  .choice.is-correct { border-color: var(--maru); background: var(--maru-soft); box-shadow: 0 4px 0 var(--maru); }
+  .choice.is-correct .choice__n { background: var(--maru); color: #fff; }
+  .choice.is-correct .choice__m { width: 1.6rem; color: var(--maru); }
+  .choice.is-wrong { border-color: var(--batsu); background: var(--batsu-soft); box-shadow: 0 4px 0 var(--batsu); }
+  .choice.is-wrong .choice__n { background: var(--batsu); color: #fff; }
+  .choice.is-wrong .choice__m { width: 1.6rem; color: var(--batsu); }
+
+  /* ---------- verdict ---------- */
+  .verdict { margin-top: 1.2rem; padding-top: 1rem; border-top: 2px dashed var(--edge); }
+  .verdict__head { display: flex; align-items: center; gap: .8rem; }
+  .mark { width: 4.2rem; height: 4.2rem; flex: none; }
+  .mark circle, .mark line { fill: none; stroke-width: 12; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw .5s cubic-bezier(.35,.75,.4,1) forwards; }
+  .mark .s2 { animation-delay: .25s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .mark--maru * { stroke: var(--maru); }
+  .mark--batsu * { stroke: var(--batsu); }
+  .verdict__word { margin: 0; font-family: var(--display); font-weight: 900; font-size: 1.6rem; line-height: 1.2; }
+  .verdict.is-ok .verdict__word { color: var(--maru); }
+  .verdict.is-ng .verdict__word { color: var(--batsu); }
+  .verdict__ans { margin: .15rem 0 0; font-size: .95rem; color: var(--ink-soft); font-weight: 700; overflow-wrap: anywhere; }
+  .verdict__ans .right { color: var(--maru); }
+  .verdict__exp {
+    margin: .9rem 0 0; padding: .9rem 1rem .9rem 3.6rem;
+    position: relative;
+    background: var(--card-2); border-radius: 16px;
+    font-size: .95rem; line-height: 1.95;
+    white-space: pre-line; overflow-wrap: anywhere;
+  }
+  .verdict__exp::before {
+    content: "かいせつ";
+    display: block; margin-bottom: .15rem;
+    font-family: var(--display); font-weight: 900; font-size: .78rem; letter-spacing: .1em; color: var(--blue-deep);
+  }
+  .verdict__exp .exp-mascot { position: absolute; left: .7rem; top: .8rem; width: 2.3rem; height: 2.3rem; }
+  .verdict .btn { margin-top: 1rem; }
+
+  /* ---------- result ---------- */
+  .result__top { display: flex; align-items: center; gap: 1rem; }
+  .result__mascot { width: clamp(84px, 22vw, 110px); flex: none; filter: drop-shadow(0 3px 0 rgba(43,48,66,.18)); }
+  .stars { display: flex; gap: .2rem; margin: 0 0 .2rem; }
+  .stars svg { width: 1.9rem; height: 1.9rem; color: var(--edge); }
+  .stars svg.on { color: var(--coin); filter: drop-shadow(0 2px 0 var(--coin-deep)); }
+  .score { margin: 0; display: flex; align-items: baseline; gap: .2rem; font-family: var(--num); font-weight: 800; font-size: 4.2rem; line-height: 1; color: var(--coin-deep); font-variant-numeric: tabular-nums; }
+  .score .unit { font-family: var(--display); font-weight: 900; font-size: 1.4rem; color: var(--ink); }
+  .score .of { font-family: var(--sans); font-weight: 400; font-size: .85rem; color: var(--ink-faint); margin-left: .3rem; }
+  .score__sub { margin: .3rem 0 0; color: var(--ink-soft); font-family: var(--display); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stamp {
+    position: absolute; top: .9rem; right: .9rem;
+    width: 5.4rem; height: 5.4rem; display: grid; place-items: center;
+    border: 3px solid var(--maru); border-radius: 50%; color: var(--maru);
+    font-family: var(--display); font-weight: 900; font-size: .95rem; line-height: 1.2; text-align: center;
+    transform: rotate(-10deg); opacity: .92; background: var(--card);
+  }
+  .stamp.is-ng { border-color: var(--batsu); color: var(--batsu); }
+  @media (max-width: 520px) { .stamp { position: static; transform: rotate(-6deg); margin: .6rem 0 0; width: 5rem; height: 5rem; } }
+  .result__line { margin: 1rem 0 0; padding: .8rem 1rem; background: var(--coin-soft); border-radius: 14px; font-size: .95rem; line-height: 1.85; }
+  .cattable { width: 100%; margin: 1.2rem 0 0; border-collapse: collapse; font-size: .92rem; font-variant-numeric: tabular-nums; }
+  .cattable th, .cattable td { padding: .45rem .3rem; border-bottom: 2px solid var(--card-2); text-align: left; }
+  .cattable th { font-family: var(--display); font-weight: 700; color: var(--ink-faint); font-size: .76rem; letter-spacing: .08em; }
+  .cattable td:first-child { font-family: var(--display); font-weight: 700; }
+  .cattable td:first-child svg { width: 1.1rem; height: 1.1rem; vertical-align: -.2rem; margin-right: .3rem; color: var(--blue); }
+  .cattable td:nth-child(n+2), .cattable th:nth-child(n+2) { text-align: right; white-space: nowrap; }
+  .cattable .bar { display: inline-block; height: 9px; width: 4rem; background: var(--card-2); border-radius: 999px; vertical-align: middle; margin-left: .5rem; overflow: hidden; }
+  .cattable .bar i { display: block; height: 100%; background: var(--coin); border-radius: 999px; }
+
+  .review { list-style: none; margin: 1.3rem 0 0; padding: 0; border-top: 2px solid var(--edge); }
+  .review > li { border-bottom: 2px solid var(--card-2); }
+  .review summary { display: grid; grid-template-columns: 1.6rem 1.7rem 1fr; gap: .4rem; align-items: center; padding: .6rem .1rem; cursor: pointer; list-style: none; font-size: .92rem; }
+  .review summary::-webkit-details-marker { display: none; }
+  .review .r__n { color: var(--ink-faint); font-family: var(--num); font-weight: 800; }
+  .review .r__m { font-family: var(--display); font-weight: 900; font-size: 1.2rem; }
+  .review .r__m.ok { color: var(--maru); }
+  .review .r__m.ng { color: var(--batsu); }
+  .review .r__t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--display); font-weight: 700; }
+  .review .r__t small { display: block; color: var(--ink-faint); font-size: .74rem; font-family: var(--sans); font-weight: 400; }
+  .review details[open] .r__t { white-space: normal; }
+  .review .r__body { padding: .2rem .1rem 1rem; font-size: .9rem; line-height: 1.9; }
+  .review .r__body p { margin: .35rem 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .review .r__body .lab { font-family: var(--display); font-weight: 900; font-size: .74rem; letter-spacing: .12em; color: var(--blue-deep); margin: .7rem 0 0; }
+  .review .r__body .yours { color: var(--batsu); }
+  .review .r__body .right { color: var(--maru); font-weight: 700; }
+  .result .btn--primary { margin-top: 1.4rem; }
+  .result .btn--ghost { margin-top: .6rem; }
+
+  .foot { font-size: .76rem; line-height: 1.7; color: var(--ink-faint); padding-top: .4rem; }
+  .foot p { margin: .2rem 0; }
+
+  #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    .mark circle, .mark line { stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="ic-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3.5 9h17M3.5 15h17"/></symbol>
+    <symbol id="ic-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="3"/><path d="M6 9.5v5M18 9.5v5"/></symbol>
+    <symbol id="ic-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-2-1.5L14 21l-2-1.5L10 21l-2-1.5L6 21z"/><path d="M9.5 8l2.5 3 2.5-3M12 11v5M10 13.5h4"/></symbol>
+    <symbol id="ic-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12.5V4.5A1.5 1.5 0 0 1 4.5 3h8l8.5 8.5a1.5 1.5 0 0 1 0 2.1L14.6 20a1.5 1.5 0 0 1-2.1 0z"/><circle cx="8" cy="8" r="1.6"/></symbol>
+    <symbol id="ic-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 4l9 5.5z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></symbol>
+    <symbol id="ic-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16v10H11l-5 4v-4H4z"/><path d="M8.5 9h7M8.5 12.5h4"/></symbol>
+    <symbol id="ic-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V4.5h6V7M3 12.5h18M12 11v3"/></symbol>
+    <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.6L12 17.5l-5.9 3.2 1.2-6.6L2.5 9.5l6.6-.9z"/></symbol>
+    <symbol id="ic-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path class="w" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+    <symbol id="ic-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+    <!-- コインちゃん（マスコット） -->
+    <symbol id="coin-face" viewBox="0 0 120 120">
+      <circle cx="60" cy="63" r="52" fill="#c9821a"/>
+      <circle cx="60" cy="58" r="52" fill="#f6b93b"/>
+      <circle cx="60" cy="58" r="43" fill="none" stroke="#e39c1e" stroke-width="3" stroke-dasharray="5 5"/>
+      <path d="M27 42q6-15 21-21" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" opacity=".55"/>
+      <text x="60" y="41" text-anchor="middle" font-family="Baloo 2, Arial, sans-serif" font-weight="800" font-size="17" fill="#b0700c">¥</text>
+      <circle cx="45" cy="57" r="4.6" fill="#2b3042"/><circle cx="75" cy="57" r="4.6" fill="#2b3042"/>
+      <circle cx="46.6" cy="55.4" r="1.6" fill="#fff"/><circle cx="76.6" cy="55.4" r="1.6" fill="#fff"/>
+      <ellipse cx="37" cy="68" rx="6.5" ry="3.6" fill="#f37f8a" opacity=".65"/><ellipse cx="83" cy="68" rx="6.5" ry="3.6" fill="#f37f8a" opacity=".65"/>
+      <path d="M48 72q12 12 24 0" fill="none" stroke="#2b3042" stroke-width="3.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="coin-wow" viewBox="0 0 120 120">
+      <circle cx="60" cy="63" r="52" fill="#c9821a"/>
+      <circle cx="60" cy="58" r="52" fill="#f6b93b"/>
+      <circle cx="60" cy="58" r="43" fill="none" stroke="#e39c1e" stroke-width="3" stroke-dasharray="5 5"/>
+      <path d="M27 42q6-15 21-21" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" opacity=".55"/>
+      <text x="60" y="41" text-anchor="middle" font-family="Baloo 2, Arial, sans-serif" font-weight="800" font-size="17" fill="#b0700c">¥</text>
+      <path fill="#ef5b70" d="M45 49l2.8 5.8 6.4.9-4.6 4.4 1.1 6.3L45 63.4l-5.7 3 1.1-6.3-4.6-4.4 6.4-.9z"/>
+      <path fill="#ef5b70" d="M75 49l2.8 5.8 6.4.9-4.6 4.4 1.1 6.3L75 63.4l-5.7 3 1.1-6.3-4.6-4.4 6.4-.9z"/>
+      <ellipse cx="60" cy="77" rx="9" ry="7" fill="#2b3042"/><ellipse cx="60" cy="80" rx="5" ry="3" fill="#f37f8a"/>
+    </symbol>
+    <symbol id="coin-hmm" viewBox="0 0 120 120">
+      <circle cx="60" cy="63" r="52" fill="#c9821a"/>
+      <circle cx="60" cy="58" r="52" fill="#f6b93b"/>
+      <circle cx="60" cy="58" r="43" fill="none" stroke="#e39c1e" stroke-width="3" stroke-dasharray="5 5"/>
+      <path d="M27 42q6-15 21-21" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" opacity=".55"/>
+      <text x="60" y="41" text-anchor="middle" font-family="Baloo 2, Arial, sans-serif" font-weight="800" font-size="17" fill="#b0700c">¥</text>
+      <circle cx="45" cy="57" r="4.6" fill="#2b3042"/><circle cx="75" cy="57" r="4.6" fill="#2b3042"/>
+      <circle cx="46.6" cy="55.4" r="1.6" fill="#fff"/><circle cx="76.6" cy="55.4" r="1.6" fill="#fff"/>
+      <path d="M48 76q12-6 24 0" fill="none" stroke="#2b3042" stroke-width="3.8" stroke-linecap="round"/>
+      <path d="M86 30q8 2 6 10" fill="none" stroke="#2b3042" stroke-width="3" stroke-linecap="round"/><circle cx="92" cy="45" r="2.2" fill="#2b3042"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="shell">
+  <header class="mast">
+    <svg class="mast__mascot" aria-hidden="true"><use href="#coin-face"/></svg>
+    <div class="mast__text">
+      <h1 class="mast__title">おかね<em>クイズ</em>大会</h1>
+      <p class="mast__sub">マネリテDAOのお金の授業から｜1回10もん</p>
+    </div>
+    <div class="mast__tools">
+      <button id="btnRuby" class="tool" type="button" aria-pressed="true" title="ふりがなの表示を切りかえる">ふりがな</button>
+      <button id="btnSound" class="tool" type="button" aria-pressed="true" title="音の ON/OFF"><svg aria-hidden="true"><use id="soundIcon" href="#ic-sound"/></svg><span id="soundLabel">おと</span></button>
+    </div>
+  </header>
+
+  <section id="start" class="card start">
+    <div class="start__hero">
+      <div>
+        <p class="eyebrow">もんだいは ぜんぶで</p>
+        <p class="start__count"><span id="poolCount">0</span><span class="unit">もん</span></p>
+        <div class="level" role="group" aria-label="レベル">
+          <button class="level__btn is-on" type="button" data-lv="1">しょうがくせい</button>
+          <button class="level__btn" type="button" data-lv="2">ぜんぶ（おとなの もんだいも）</button>
+        </div>
+      </div>
+      <svg class="start__pig" viewBox="0 0 170 140" aria-hidden="true">
+        <g class="pig-coin">
+          <circle cx="90" cy="18" r="12" fill="#f6b93b" stroke="#c9821a" stroke-width="3"/>
+          <text x="90" y="24" text-anchor="middle" font-family="Baloo 2, Arial, sans-serif" font-weight="800" font-size="15" fill="#b0700c">¥</text>
+        </g>
+        <path d="M58 52l-8-24 24 12z" fill="var(--pig)" stroke="#2b3042" stroke-width="3" stroke-linejoin="round"/>
+        <ellipse cx="88" cy="88" rx="60" ry="44" fill="var(--pig)" stroke="#2b3042" stroke-width="3"/>
+        <rect x="76" y="44" width="30" height="7" rx="3.5" fill="#2b3042"/>
+        <rect x="52" y="122" width="16" height="15" rx="5" fill="var(--pig)" stroke="#2b3042" stroke-width="3"/>
+        <rect x="108" y="122" width="16" height="15" rx="5" fill="var(--pig)" stroke="#2b3042" stroke-width="3"/>
+        <ellipse cx="32" cy="92" rx="15" ry="12" fill="var(--pig-2)" stroke="#2b3042" stroke-width="3"/>
+        <circle cx="27" cy="92" r="2.6" fill="#2b3042"/><circle cx="37" cy="92" r="2.6" fill="#2b3042"/>
+        <circle cx="54" cy="76" r="3.8" fill="#2b3042"/><circle cx="55.4" cy="74.6" r="1.3" fill="#fff"/>
+        <ellipse cx="62" cy="88" rx="6" ry="3.4" fill="#f37f8a" opacity=".55"/>
+        <path d="M146 78q12-6 8-16-3-7-10-2" fill="none" stroke="#2b3042" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <ul class="cats" id="catList"></ul>
+    <p class="start__rule">1回に <strong>10もん</strong> をランダムに出します。1もん <strong>10てん</strong>、100てんまんてん。こたえをえらぶと、すぐに「せいかい」と「かいせつ」が出るよ。</p>
+    <p class="start__fx" id="fxLine" hidden></p>
+    <p class="start__last" id="lastScore" hidden></p>
+    <button id="btnStart" class="btn btn--primary" type="button">10もんに ちょうせん！</button>
+    <p class="start__note">まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id="buildDate"></span> 版</p>
+  </section>
+
+  <section id="quiz" hidden>
+    <div class="shell" style="gap:.7rem">
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <article class="card">
+        <div class="qmeta">
+          <span class="qmeta__num" id="qNum">だい<b>1</b>もん</span>
+          <span class="chip" id="qCat"></span>
+        </div>
+        <p class="qtext" id="qText"></p>
+        <ol class="choices" id="choices"></ol>
+        <div class="verdict" id="verdict" hidden aria-live="polite">
+          <div class="verdict__head">
+            <svg class="mark mark--maru" id="markMaru" viewBox="0 0 120 120" role="img" aria-label="まる"><circle cx="60" cy="60" r="44" pathLength="100" transform="rotate(-100 60 60)"/></svg>
+            <svg class="mark mark--batsu" id="markBatsu" viewBox="0 0 120 120" role="img" aria-label="ばつ" hidden><line class="s1" x1="22" y1="22" x2="98" y2="98" pathLength="100"/><line class="s2" x1="98" y1="22" x2="22" y2="98" pathLength="100"/></svg>
+            <div>
+              <p class="verdict__word" id="vWord"></p>
+              <p class="verdict__ans" id="vAns"></p>
+            </div>
+          </div>
+          <div class="verdict__exp"><svg class="exp-mascot" aria-hidden="true"><use href="#coin-face"/></svg><span id="vExp"></span></div>
+          <button id="btnNext" class="btn btn--primary" type="button">つぎの もんだいへ</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="result" class="card result" hidden>
+    <div class="result__top">
+      <svg class="result__mascot" aria-hidden="true"><use id="resultFace" href="#coin-face"/></svg>
+      <div>
+        <p class="eyebrow">けっか</p>
+        <div class="stars" id="stars" aria-hidden="true"></div>
+        <p class="score"><span id="scoreNum">0</span><span class="unit">てん</span><span class="of">／100てん</span></p>
+        <p class="score__sub" id="scoreSub"></p>
+      </div>
+    </div>
+    <div class="stamp" id="stamp" aria-hidden="true"></div>
+    <p class="result__line" id="resultLine"></p>
+    <table class="cattable">
+      <thead><tr><th>ジャンル</th><th>出た数</th><th>せいかい</th></tr></thead>
+      <tbody id="catBody"></tbody>
+    </table>
+    <ol class="review" id="review"></ol>
+    <button id="btnAgain" class="btn btn--primary btn--coin" type="button">もういちど ちょうせん！</button>
+    <button id="btnHome" class="btn btn--ghost" type="button">さいしょに もどる</button>
+  </section>
+
+  <footer class="foot">
+    <p>もんだいは、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。かいせつもそのスライドをもとに書いています。</p>
+    <p>数字（税金・金利・年金など）は作った当時のもので、あとから変わることがあります。</p>
+  </footer>
+</div>
+
+<canvas id="confetti" aria-hidden="true" hidden></canvas>
+
+<script>
+  const BANK = [{"id":"D01-01","src":"Canva「クイズ集」","cat":1,"lv":1,"q":"{世界|せかい}で{一番|いちばん}{大|おお}きいお金の{直径|ちょっけい}は、どれくらい？（1{円玉|えんだま}の{直径|ちょっけい}は2cm）","c":["60cm","1.8m","3.6m","5.4m"],"a":2,"e":"正解は③ 3.6m。\n{日本|にほん}のちょうど{南|みなみ}にあるヤップ{島|とう}で{昔|むかし}{使|つか}われていた「フェイ」という{石|いし}のお金です。{海|うみ}をわたって{他|ほか}の{島|しま}から{数|すう}か{月|げつ}かけて{石|いし}をとってきたので、{苦労|くろう}が{大|おお}きいほど{価値|かち}が{高|たか}くなりました。{家|いえ}を{買|か}うときや{結婚式|けっこんしき}のおくり{物|もの}など{大|おお}きな{支払|しはら}いに{使|つか}われ、{持|も}ち{運|はこ}べないものは「{持|も}ち{主|ぬし}が{変|か}わる」だけ。だれもぬすもうとしないお金です。{今|いま}はアメリカのドルを{使|つか}っています。"},{"id":"D01-02","src":"Canva「クイズ集」","cat":3,"lv":1,"q":"{今|いま}、{日本|にほん}にある{税金|ぜいきん}はどれ？","c":["うさぎ{税|ぜい}","{入湯税|にゅうとうぜい}","ポテトチップス{税|ぜい}","{独身税|どくしんぜい}"],"a":1,"e":"正解は② 入湯税。\n{温泉|おんせん}に{入|はい}るときにはらう{税金|ぜいきん}で、よりよい{温泉|おんせん}づくりに{役立|やくだ}てられています。うさぎ{税|ぜい}は{約|やく}150{年前|ねんまえ}の{明治時代|めいじじだい}に{本当|ほんとう}にありました。うさぎを{飼|か}うのが{大流行|だいりゅうこう}して{高値|たかね}で{取引|とりひき}され、にせものやサギがふえたので、{流行|りゅうこう}を{落|お}ち{着|つ}かせるために{作|つく}られた{税金|ぜいきん}です。ポテトチップス{税|ぜい}はハンガリーに{今|いま}もあり、{独身税|どくしんぜい}は{昔|むかし}のブルガリアにありました。"},{"id":"D01-03","src":"Canva「クイズ集」","cat":2,"lv":1,"q":"2024{年|ねん}に{発行|はっこう}された{新|あたら}しい1{万円札|まんえんさつ}に{描|えが}かれている{人|ひと}はだれ？","c":["{渋沢栄一|しぶさわ えいいち}","{津田梅子|つだ うめこ}","{北里柴三郎|きたざと しばさぶろう}","{聖徳太子|しょうとく たいし}"],"a":0,"e":"正解は① 渋沢栄一。\n「{近代日本経済|きんだいにほんけいざい}の{父|ちち}」とよばれ、{日本|にほん}で{初|はじ}めて{銀行|ぎんこう}をつくり、500{以上|いじょう}の{会社|かいしゃ}の{立|た}ち{上|あ}げにかかわった{人|ひと}です。{津田梅子|つだうめこ}は{新|あたら}しい5{千円札|せんえんさつ}、{北里柴三郎|きたざとしばさぶろう}は{新|あたら}しい{千円札|せんえんさつ}の{人|ひと}。{聖徳太子|しょうとくたいし}は{昔|むかし}のお{札|さつ}に7{回|かい}も{登場|とうじょう}した「お{札|さつ}の{顔|かお}」ですが、{今回|こんかい}は{選|えら}ばれませんでした。"},{"id":"D01-04","src":"Canva「クイズ集」","cat":2,"lv":1,"q":"2024{年|ねん}に{発行|はっこう}された{新|あたら}しい5{千円札|せんえんさつ}に{描|えが}かれている{人|ひと}はだれ？","c":["{樋口一葉|ひぐち いちよう}","{津田梅子|つだ うめこ}","{紫式部|むらさきしきぶ}","{渋沢栄一|しぶさわ えいいち}"],"a":1,"e":"正解は② 津田梅子。\n6{歳|さい}のときに{日本|にほん}で{初|はじ}めての{女子留学生|じょしりゅうがくせい}としてアメリカにわたり、{帰国後|きこくご}に{女子英学塾|じょしえいがくじゅく}（{今|いま}の{津田塾大学|つだじゅくだいがく}）をつくった{人|ひと}。{女|おんな}の{子|こ}の{教育|きょういく}に{力|ちから}をつくしました。{樋口一葉|ひぐちいちよう}は{前|まえ}の5{千円札|せんえんさつ}の{人|ひと}、{紫式部|むらさきしきぶ}は2{千円札|せんえんさつ}のうらに{描|えが}かれています。"},{"id":"D01-05","src":"Canva「クイズ集」","cat":2,"lv":1,"q":"2024{年|ねん}に{発行|はっこう}された{新|あたら}しい{千円札|せんえんさつ}に{描|えが}かれている{人|ひと}はだれ？","c":["{野口英世|のぐち ひでよ}","{夏目漱石|なつめ そうせき}","{北里柴三郎|きたざと しばさぶろう}","{津田梅子|つだ うめこ}"],"a":2,"e":"正解は③ 北里柴三郎。\n「{日本医学|にほんいがく}の{父|ちち}」とよばれるお{医者|いしゃ}さんで、{破傷風|はしょうふう}という{病気|びょうき}の{治療法|ちりょうほう}を{見|み}つけました。{野口英世|のぐちひでよ}は{前|まえ}の{千円札|せんえんさつ}、{夏目漱石|なつめそうせき}はそのさらに{前|まえ}の{千円札|せんえんさつ}の{人|ひと}です。"},{"id":"D01-06","src":"Canva「クイズ集」","cat":2,"lv":1,"q":"1{円玉|えんだま}に{描|えが}かれている{木|き}は、{何|なん}の{木|き}？","c":["{桜|さくら}の{木|き}","ブナの{木|き}","{松|まつ}の{木|き}","{実在|じつざい}しない{木|き}"],"a":3,"e":"正解は④ 実在しない木。\n1{円玉|えんだま}の{木|き}は「{若木|わかぎ}」といって、{特定|とくてい}の{種類|しゅるい}の{木|き}ではありません。すくすくと{育|そだ}っていく{日本|にほん}をイメージした、{想像上|そうぞうじょう}の{木|き}なのです。1955{年|ねん}にデザインが{一般|いっぱん}から{募集|ぼしゅう}されて{決|き}まりました。"},{"id":"D01-07","src":"Canva「クイズ集」","cat":2,"lv":1,"q":"1{円玉|えんだま}は1{円|えん}では{作|つく}れません。1{枚|まい}{作|つく}るのに、いくらかかる？","c":["1{円|えん}","{約|やく}3{円|えん}","{約|やく}10{円|えん}","{約|やく}30{円|えん}"],"a":1,"e":"正解は② 約3円。\n1{円玉|えんだま}はアルミニウムでできていて、{材料代|ざいりょうだい}と{作|つく}る{手間|てま}をあわせると1{枚|まい}あたり{約|やく}3{円|えん}かかるといわれています。つまり{作|つく}れば{作|つく}るほど{赤字|あかじ}！ キャッシュレスが{広|ひろ}がって、{最近|さいきん}はほとんど{新|あたら}しく{作|つく}られていません。"},{"id":"D01-08","src":"Canva「クイズ集」","cat":2,"lv":1,"q":"1{万円札|まんえんさつ}を1{枚|まい}{作|つく}るのに、いくらかかる？","c":["{約|やく}3{円|えん}","{約|やく}20{円|えん}","{約|やく}200{円|えん}","{約|やく}2,000{円|えん}"],"a":1,"e":"正解は② 約20円。\n1{万円札|まんえんさつ}は{国立印刷局|こくりついんさつきょく}で{作|つく}られています。2023{年度|ねんど}にお{札|さつ}を{作|つく}るのにかかったお金（{約|やく}619{億円|おくえん}）を{作|つく}った{枚数|まいすう}（{約|やく}30{億枚|おくまい}）で{割|わ}ると、1{枚|まい}あたり{約|やく}20{円|えん}。3Dホログラムなどのにせもの{防止|ぼうし}の{技術|ぎじゅつ}が{入|はい}った{新|あたら}しいお{札|さつ}は、{前|まえ}のお{札|さつ}（{約|やく}18{円|えん}）より{少|すこ}し{高|たか}くなりました（{国立印刷局|こくりついんさつきょく}の2023{年度|ねんど}の{決算|けっさん}より）。1{万円|まんえん}の{価値|かち}があるのは、「みんなが1{万円|まんえん}として{使|つか}える」と{信|しん}じているからなのです。"},{"id":"D01-09","src":"Canva「クイズ集」","cat":3,"lv":1,"q":"{消費税|しょうひぜい}が{世界|せかい}で{一番高|いちばんたか}い{国|くに}の{税率|ぜいりつ}は？（{日本|にほん}は10％）","c":["15％","21％","27％","35％"],"a":2,"e":"正解は③ 27％。\nヨーロッパのハンガリーという{国|くに}で、{買|か}い{物|もの}をすると27％の{消費税|しょうひぜい}がかかります。1,000{円|えん}のものを{買|か}うと1,270{円|えん}！ ヨーロッパの{国|くに}は20％{前後|ぜんご}のところが{多|おお}く、{世界|せかい}の{平均|へいきん}は{約|やく}17.6％。{日本|にほん}の10％は{世界|せかい}で{見|み}ると{低|ひく}いほうです。（2023{年|ねん}のデータ）"},{"id":"D01-10","src":"Canva「クイズ集」","cat":3,"lv":1,"q":"{小学生|しょうがくせい}1{人|ひと}が6{年間|ねんかん}{学校|がっこう}に{通|かよ}うために{使|つか}われる{税金|ぜいきん}は、いくらくらい？","c":["{約|やく}5{万円|まんえん}","{約|やく}50{万円|まんえん}","{約|やく}500{万円|まんえん}","{約|やく}5,000{万円|まんえん}"],"a":2,"e":"正解は③ 約500万円。\n{公立|こうりつ}の{小学校|しょうがっこう}は{授業料|じゅぎょうりょう}がタダですが、{先生|せんせい}のお{給料|きゅうりょう}や{校舎|こうしゃ}、{教科書|きょうかしょ}などに{児童|じどう}1{人|ひと}あたり1{年|ねん}で{約|やく}90{万円|まんえん}の{税金|ぜいきん}が{使|つか}われています。6{年間|ねんかん}だと{約|やく}500{万円|まんえん}{以上|いじょう}。みんなが{学校|がっこう}で{学|まな}べるのは、{税金|ぜいきん}のおかげなのです。"},{"id":"D01-11","src":"Canva「クイズ集」","cat":4,"lv":1,"q":"{日本|にほん}で800{円|えん}くらいのラーメン。{物価|ぶっか}の{高|たか}いスイスの{都市|とし}チューリッヒで{食|た}べると、{日本円|にほんえん}にしていくらくらい？","e":"スイスは{世界|せかい}でも{物価|ぶっか}（ものの{値段|ねだん}）がとても{高|たか}い{国|くに}。チューリッヒのラーメン{店|てん}では1{杯|ぱい}29.5スイスフラン（2025{年|ねん}）。{{FXDATE}}の{相場|そうば}（{{RATE:CHF}}）で{計算|けいさん}すると{{FX:CHF:29.5}}になります。{日本|にほん}のラーメン{店|てん}がスイスに{出|だ}した{店|みせ}も1{杯|ぱい}5,000{円前後|えんぜんご}。{同|おな}じものでも{国|くに}によって{値段|ねだん}は{大|おお}きくちがい、{為替|かわせ}（{円|えん}とフランを{交換|こうかん}するレート）が{動|うご}くと、{日本円|にほんえん}にしたときの{値段|ねだん}も{変|か}わります。{日本|にほん}のごはんは{安|やす}くておいしいと{世界中|せかいじゅう}から{人気|にんき}です。","fx":{"cur":"CHF","amount":29.5,"what":"チューリッヒのラーメン店「夢らーめん」の1杯（2025年）"}},{"id":"D02-01","src":"Canva「お金のクイズ」豆ちしき編","cat":2,"lv":1,"q":"{日本|にほん}でこれまでに{発行|はっこう}された、{一番|いちばん}{高|たか}い{金額|きんがく}のお金は？","c":["1{万円|まんえん}","10{万円|まんえん}","100{万円|まんえん}","1{億円|おくえん}"],"a":1,"e":"正解は② 10万円。\n{天皇陛下|てんのうへいか}の{記念|きねん}として{作|つく}られた「10{万円金貨|まんえんきんか}」です。{金|きん}でできていて、1986{年|ねん}のものは20g、1990{年|ねん}のものは30g。{作|つく}られたころは{金|きん}1gが{約|やく}2,000{円|えん}だったので{中身|なかみ}は4〜6{万円分|まんえんぶん}でしたが、その{後|ご}{金|きん}の{値段|ねだん}が{何倍|なんばい}にも{上|あ}がって、{今|いま}は{金|きん}としての{価値|かち}が{何十万円|なんじゅうまんえん}にも！ だから「{使|つか}えるけど、だれも{使|つか}わない」お金なのです。"},{"id":"D02-02","src":"Canva「お金のクイズ」豆ちしき編","cat":2,"lv":1,"q":"2,000{円札|えんさつ}が{発行|はっこう}されたのはいつ？","c":["1920{年|ねん}","1980{年|ねん}","2000{年|ねん}","2020{年|ねん}"],"a":2,"e":"正解は③ 2000年。\n2000{年|ねん}に{沖縄|おきなわ}で{開|ひら}かれた{国際会議|こくさいかいぎ}「{沖縄|おきなわ}サミット」を{記念|きねん}して{作|つく}られました。おもてには{沖縄|おきなわ}・{首里城|しゅりじょう}の{守礼門|しゅれいもん}、うらには{紫式部|むらさきしきぶ}と{源氏物語|げんじものがたり}が{描|えが}かれています。{今|いま}はほとんど{見|み}かけませんが、{沖縄県|おきなわけん}ではまだたくさん{使|つか}われていて、{観光客|かんこうきゃく}にも{人気|にんき}です。"},{"id":"D02-03","src":"Canva「お金のクイズ」豆ちしき編","cat":2,"lv":1,"q":"2,000{円札|えんさつ}のおもてに{描|えが}かれている{建物|たてもの}は？","c":["{守礼門|しゅれいもん}（{沖縄|おきなわ}）","{金閣寺|きんかくじ}（{京都|きょうと}）","{東京|とうきょう}タワー","{大阪城|おおさかじょう}"],"a":0,"e":"正解は① 守礼門（沖縄）。\n{沖縄県那覇市|おきなわけんなはし}にある{首里城|しゅりじょう}の{門|もん}で、「{礼節|れいせつ}を{重|おも}んじる」という{意味|いみ}の{名前|なまえ}です。2,000{円札|えんさつ}は{沖縄|おきなわ}サミットの{記念|きねん}なので、{沖縄|おきなわ}のシンボルが{選|えら}ばれました。"},{"id":"D02-04","src":"Canva「お金のクイズ」豆ちしき編／「お金のクイズ 幼児用」","cat":2,"lv":1,"q":"{明治時代|めいじじだい}の10{円札|えんさつ}「{甲|こう}10{円券|えんけん}」に{描|えが}かれていて、ニックネームにもなっている{動物|どうぶつ}は？","c":["ブタ","イノシシ","ウシ","シカ"],"a":1,"e":"正解は② イノシシ。\n「イノシシ{券|けん}」とよばれています。{描|えが}かれている{和気清麻呂|わけのきよまろ}という{奈良時代|ならじだい}の{人|ひと}が、{悪|わる}い{人|ひと}におそわれたとき、イノシシの{大群|たいぐん}に{助|たす}けられたという{言|い}い{伝|つた}えがあるからです。{京都|きょうと}の{護王神社|ごおうじんじゃ}には、{今|いま}もイノシシの{像|ぞう}があります。"},{"id":"D02-05","src":"Canva「お金のクイズ」豆ちしき編","cat":4,"lv":1,"q":"{明治|めいじ}32{年|ねん}（1899{年|ねん}）に{発行|はっこう}された10{円札|えんさつ}。{当時|とうじ}の10{円|えん}は、{今|いま}のお金にすると、いくらくらい？","c":["10{円|えん}","100{円|えん}","5,000{円|えん}","{約|やく}10{万円|まんえん}"],"a":3,"e":"正解は④ 約10万円。\n{今|いま}から125{年以上前|ねんいじょうまえ}の10{円|えん}は、{今|いま}の10{万円|まんえん}くらいの{価値|かち}がありました。{当時|とうじ}の{一番小|いちばんちい}さいお金の{単位|たんい}は「{厘|りん}」で、1,000{厘|りん}＝1{円|えん}。ものの{値段|ねだん}が{長|なが}い{時間|じかん}をかけて{上|あ}がっていく（インフレ）と、{同|おな}じ「10{円|えん}」でも{買|か}えるものが{変|か}わってしまうのです。"},{"id":"D02-06","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"ことわざ「{金|かね}は{天下|てんか}の{回|まわ}りもの」の{意味|いみ}は？","c":["お金は{一人|ひとり}のところにとどまらず、{人々|ひとびと}の{間|あいだ}をめぐるもの","お金{持|も}ちは{天下|てんか}をとれる","お金は{回|まわ}すとふえる","お金は{空|そら}からふってくる"],"a":0,"e":"正解は① お金は一人のところにとどまらず、人々の間をめぐるもの。\nお金は{使|つか}えばだれかのところへ{行|い}き、またいつか{自分|じぶん}のところにもどってくる。「{今|いま}お金がなくても、そのうちめぐってくるよ」というはげましの{意味|いみ}でも{使|つか}われます。"},{"id":"D02-07","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"ことわざ「{金|かね}に{糸目|いとめ}をつけない」の{意味|いみ}は？","c":["お金を{持|も}っていると{幸|しあわ}せになれる","{必要|ひつよう}なときはお金をおしまずに{使|つか}う","お金に{糸|いと}を{結|むす}んで{落|お}とさない","お金を{細|こま}かく{数|かぞ}える"],"a":1,"e":"正解は② 必要なときはお金をおしまずに使う。\n「{糸目|いとめ}」はたこ{揚|あ}げのたこをあやつる{糸|いと}のこと。{糸目|いとめ}をつけないたこは、どこまでも{飛|と}んでいってしまいます。そこから「お金をためらわずにどんどん{使|つか}う」という{意味|いみ}になりました。"},{"id":"D02-08","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"ことわざ「{商|あきな}いは{牛|うし}のよだれ」の{意味|いみ}は？","c":["お金は{牛|うし}のように{大切|たいせつ}にあつかうべき","{少|すこ}しずつコツコツと{商売|しょうばい}を{続|つづ}けることが{大切|たいせつ}","{商売|しょうばい}は{牛|うし}を{売|う}るのが{一番|いちばん}もうかる","{牛|うし}はよだれが{多|おお}い"],"a":1,"e":"正解は② 少しずつコツコツと商売を続けることが大切。\n{牛|うし}のよだれは{細|ほそ}く{長|なが}く、だらだらと{切|き}れずに{続|つづ}きます。{商売|しょうばい}もそれと{同|おな}じで、いっぺんに{大|おお}もうけをねらうより、{気長|きなが}に{少|すこ}しずつ{続|つづ}けるほうがうまくいく、という{教|おし}えです。"},{"id":"D02-09","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"「{虎|とら}の{子|こ}」といえば、どんなお金のこと？","c":["お金を{守|まも}る{虎|とら}のような{力|ちから}","{大切|たいせつ}にしている{大事|だいじ}なお金や{財産|ざいさん}","{虎|とら}のように{強|つよ}いお金{持|も}ち","{動物園|どうぶつえん}の{入場料|にゅうじょうりょう}"],"a":1,"e":"正解は② 大切にしている大事なお金や財産。\n{虎|とら}は{自分|じぶん}の{子|こ}どもをとても{大事|だいじ}に{育|そだ}てるといわれています。そこから「{手放|てばな}したくない{大切|たいせつ}なもの」、とくにコツコツためた{大事|だいじ}なお金を「{虎|とら}の{子|こ}」とよぶようになりました。「{虎|とら}の{子|こ}の{貯金|ちょきん}」のように{使|つか}います。"},{"id":"D02-10","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"「{金|かね}の{成|な}る{木|き}」の{意味|いみ}は？","c":["お金を{生|う}み{出|だ}してくれる{財産|ざいさん}や{仕組|しく}み","お金が{実|み}る{本物|ほんもの}の{木|き}","お金{持|も}ちの{庭|にわ}にある{木|き}","お金をかくす{木|き}"],"a":0,"e":"正解は① お金を生み出してくれる財産や仕組み。\n{放|ほう}っておいてもお金が{入|はい}ってくるもののたとえです。じつは「{金|かね}のなる{木|き}」という{名前|なまえ}の{植物|しょくぶつ}も{本当|ほんとう}にあって（{葉|は}っぱが{丸|まる}くてぷっくりしている{多肉植物|たにくしょくぶつ}）、{水|みず}やりを{工夫|くふう}すると{花|はな}もさきますよ。"},{"id":"D02-11","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"ことわざ「{貧|ひん}すれば{鈍|どん}する」の{意味|いみ}は？","c":["お金がなくなると{心|こころ}にゆとりがなくなり、{判断|はんだん}がにぶる","{貧乏|びんぼう}な{人|ひと}は{動|うご}きがおそい","お金がないと{足|あし}がおそくなる","{貧乏|びんぼう}でも{心|こころ}はゆたか"],"a":0,"e":"正解は① お金がなくなると心にゆとりがなくなり、判断がにぶる。\nアメリカのプリンストン{大学|だいがく}の{研究|けんきゅう}では、お金の{心配|しんぱい}をかかえていると、{頭|あたま}のはたらきがIQで13ポイントほど{下|さ}がるといわれています。これは{徹夜明|てつやあ}けと{同|おな}じくらい！ だからこそ、ふだんからお金の{知識|ちしき}を{身|み}につけておくことが{大事|だいじ}なのです。"},{"id":"D02-12","src":"Canva「お金のクイズ」ことわざ編","cat":6,"lv":1,"q":"「{宵越|よいご}しの{金|かね}は{持|も}たない」。これはどういう{意味|いみ}？","c":["どろぼうが{来|く}るから、{夜|よる}にお金を{持|も}ち{歩|ある}いてはいけない","{江戸|えど}っ{子|こ}は、その{日|ひ}にかせいだお金をその{日|ひ}のうちに{使|つか}うのがかっこいいとされた","{夜|よる}はお金を{数|かぞ}えてはいけない","{夜|よる}に{買|か}い{物|もの}をしてはいけない"],"a":1,"e":"正解は② 江戸っ子は、その日にかせいだお金をその日のうちに使うのがかっこいいとされた。\n「{宵越|よいご}し」は{次|つぎ}の{日|ひ}まで{持|も}ちこすこと。{江戸時代|えどじだい}の{町|まち}の{人|ひと}は、お金にこだわらず、その{日|ひ}のうちにパッと{使|つか}うのが「{粋|いき}」だとされていました。かっこいいけれど、{今|いま}の{時代|じだい}にまねするのはおすすめしません。"},{"id":"D02-13","src":"Canva「お金のクイズ」ことわざ編／「海外ことわざ編」","cat":6,"lv":1,"q":"{英語|えいご}のことわざ「Don't put all your eggs in one basket.（{卵|たまご}を{一|ひと}つのかごに{入|い}れるな）」が{教|おし}えていることは？","c":["{一|ひと}つのかごにまとめたほうが{持|も}ちやすい","{全部|ぜんぶ}を1か{所|しょ}に{集|あつ}めると、{失敗|しっぱい}したときに{全部|ぜんぶ}なくなる。だから{分|わ}けておこう","{卵|たまご}はみんなに{分|わ}けてあげよう","かごは{一|ひと}つあれば{十分|じゅうぶん}"],"a":1,"e":"正解は② 全部を1か所に集めると、失敗したときに全部なくなる。だから分けておこう。\n{卵|たまご}を{全部|ぜんぶ}{一|ひと}つのかごに{入|い}れて、そのかごを{落|お}としたら{全部|ぜんぶ}われてしまいます。お金も{同|おな}じで、1か{所|しょ}にまとめず{分|わ}けておくと、{一|ひと}つがダメになっても{全部|ぜんぶ}は{失|うしな}いません。これを「{分散|ぶんさん}」といって、{投資|とうし}の{基本|きほん}の{考|かんが}え{方|かた}です。"},{"id":"D03-01","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":1,"q":"「へそくり」の「へそ」は、もともと{何|なに}のこと？","c":["おなかの「おへそ」","{家|いえ}の{中心|ちゅうしん}という{意味|いみ}","{麻|あさ}の{糸|いと}のこと","「へそまがり」の「へそ」"],"a":2,"e":"正解は③ 麻の糸のこと。\n{昔|むかし}のことばで「{綜麻|へそ}」といえば{細|ほそ}い{麻|あさ}の{糸|いと}のこと。{昔|むかし}の{女性|じょせい}が{家事|かじ}の{合間|あいま}に{麻糸|あさいと}をつむぎ、それを{売|う}って{得|え}た{小|ちい}さなお金を{少|すこ}しずつためていたことが、「へそくり」のはじまりといわれています。"},{"id":"D03-02","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":1,"q":"へそくりが{生|う}まれた{背景|はいけい}として{正|ただ}しいのは？","c":["{女性|じょせい}が{家事|かじ}の{合間|あいま}に{内職|ないしょく}（{家|いえ}でできる{仕事|しごと}）をしていた","{江戸時代|えどじだい}は{副業|ふくぎょう}がOKだった","お{祭|まつ}りのためのお金だった","{殿様|とのさま}の{命令|めいれい}で{始|はじ}まった"],"a":0,"e":"正解は① 女性が家事の合間に内職（家でできる仕事）をしていた。\n{昔|むかし}の{家|いえ}では、お金の{管理|かんり}は{夫|おっと}（{家|いえ}の{主人|しゅじん}）がして、{妻|つま}が{自由|じゆう}に{使|つか}えるお金は{少|すく}ないのがふつうでした。その{中|なか}で、{麻糸|あさいと}をつむぐ・ぬい{物|もの}をする・{野菜|やさい}や{小物|こもの}を{売|う}る、といった{細|こま}かい{仕事|しごと}で{得|え}たお金が、{女性|じょせい}が{自分|じぶん}で{使|つか}える{数少|かずすく}ないお金だったのです。"},{"id":"D03-03","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":1,"q":"{江戸時代|えどじだい}のへそくりの{主|おも}な{目的|もくてき}は？","c":["ぜいたく{品|ひん}を{買|か}うため","もしものときに{家族|かぞく}を{守|まも}るため","{料理|りょうり}の{材料|ざいりょう}を{買|か}い{足|た}すため","{旅行|りょこう}に{行|い}くため"],"a":1,"e":"正解は② もしものときに家族を守るため。\n{夫|おっと}が{病気|びょうき}になったとき、{子|こ}どもの{医療費|いりょうひ}、{生活|せいかつ}が{苦|くる}しいときの{補|おぎな}い…。へそくりはぜいたくのためではなく、「{家族|かぞく}を{支|ささ}える{最後|さいご}のとりで」でした。{私|わたし}たちのご{先祖|せんぞ}さまも、へそくりで{家族|かぞく}を{守|まも}っていたのかもしれませんね。"},{"id":"D03-04","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":2,"q":"{明治|めいじ}〜{昭和|しょうわ}の{前半|ぜんはん}にへそくりが{広|ひろ}がった{理由|りゆう}は？","c":["サラリーマン{文化|ぶんか}と{家計管理|かけいかんり}（やりくり）が{広|ひろ}まった","{宝|たから}くじが{広|ひろ}まった","{銀行口座|ぎんこうこうざ}を{持|も}つ{人|ひと}が{減|へ}った","お金が{木|き}に{生|は}えるようになった"],"a":0,"e":"正解は① サラリーマン文化と家計管理（やりくり）が広まった。\nこの{時代|じだい}、とくに{都会|とかい}では{毎月決|まいつきき}まったお{給料|きゅうりょう}をもらう「サラリーマン」がふえました。お{給料|きゅうりょう}を{封筒|ふうとう}や{袋|ふくろ}に{分|わ}けて{生活費|せいかつひ}をやりくりするスタイルが{広|ひろ}まり、「やりくりの{工夫|くふう}→{少|すこ}し{余|あま}ったお金→へそくり」という{流|なが}れが{自然|しぜん}に{生|う}まれたのです。"},{"id":"D03-05","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":1,"q":"{今|いま}の{時代|じだい}のへそくりの{特徴|とくちょう}として{正|ただ}しいのは？","c":["たんすの{奥|おく}に{現金|げんきん}をかくすのが{主流|しゅりゅう}","ネット{銀行|ぎんこう}やキャッシュレスでためる{人|ひと}が{多|おお}い","{家|いえ}の{庭|にわ}にうめることが{多|おお}い","{今|いま}はへそくりをする{人|ひと}はいない"],"a":1,"e":"正解は② ネット銀行やキャッシュレスでためる人が多い。\nたんす{預金|よきん}は{昭和|しょうわ}までのスタイル。{今|いま}はスマホで{開|ひら}けるネット{銀行|ぎんこう}やポイントなど、「{目|め}に{見|み}えにくい」デジタルなへそくりが{主流|しゅりゅう}です。{庭|にわ}にうめるのは{時代劇|じだいげき}の{中|なか}だけ。ぬすまれたり{場所|ばしょ}をわすれたりするので、おすすめしません。"},{"id":"D03-06","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":2,"q":"{今|いま}のへそくりでふえている「{見|み}えにくいため{方|かた}」とは？","c":["NISA（ニーサ）の{自動積立|じどうつみたて}にする","{宝|たから}くじに{使|つか}う","{競馬|けいば}に{使|つか}う","ガチャガチャに{使|つか}う"],"a":0,"e":"正解は① NISA（ニーサ）の自動積立にする。\nNISAは{投資|とうし}でふえたお金に{税金|ぜいきん}がかからない{制度|せいど}。{毎月自動|まいつきじどう}でお金がつみたてられるので、{気|き}づかないうちに「たまる」{仕組|しく}みです。{宝|たから}くじや{競馬|けいば}は「{当|あ}たればラッキー」のギャンブルで、お金を{使|つか}う{行為|こうい}。ためるのが{目的|もくてき}のへそくりとは{正反対|せいはんたい}です。"},{"id":"D03-07","src":"Canva「へそくりお金のクイズ」","cat":5,"lv":1,"q":"へそくりの{文化|ぶんか}は、{日本|にほん}だけにある？","c":["{日本|にほん}だけ","{中国|ちゅうごく}だけにもある","{中国|ちゅうごく}・{韓国|かんこく}・アメリカなど{世界中|せかいじゅう}にある","ヨーロッパだけにもある"],"a":2,"e":"正解は③ 中国・韓国・アメリカなど世界中にある。\n{中国|ちゅうごく}では「{私房钱|スーファンチェン}」、{韓国|かんこく}では「{비자금|ピジャグム}（{秘密資金|ひみつしきん}）」、{英語|えいご}では「secret stash（{秘密|ひみつ}のかくし{金|がね}）」や「rainy-day money（{雨|あめ}の{日|ひ}＝{困|こま}ったときのためのお金）」といいます。{困|こま}ったときのそなえとして{家族|かぞく}に{内緒|ないしょ}でためる…{世界中|せかいじゅう}の{人|ひと}が{同|おな}じことを{考|かんが}えているんですね。"},{"id":"D04-01","src":"Canva「みらいポケット⑤クイズ大会」","cat":1,"lv":1,"q":"お金の{材料|ざいりょう}になったことが「ない」ものはどれ？","c":["{土|つち}","{水|みず}","{木|き}","プラスチック"],"a":1,"e":"正解は② 水。\n{水|みず}はこぼれる・{重|おも}い・かわいてなくなる…とお金としては{使|つか}いにくいですね。{昔|むかし}は{木|き}のお金や{貝|かい}のお金、{石|いし}のお金もありました。{土|つち}は{固|かた}めて{粘土板|ねんどばん}のような{形|かたち}で{使|つか}われたことがあります。{今|いま}は{紙|かみ}・{金属|きんぞく}・プラスチックがよく{使|つか}われています。"},{"id":"D04-02","src":"Canva「みらいポケット⑤クイズ大会」","cat":2,"lv":1,"q":"{日本|にほん}のお{札|さつ}は、{何|なに}でできている？","c":["{紙|かみ}","プラスチック","{布|ぬの}","{木|き}"],"a":0,"e":"正解は① 紙。\nだから「{紙幣|しへい}」とよばれます。ただのコピー{用紙|ようし}とはちがい、「{三椏|みつまた}」という{植物|しょくぶつ}をまぜてとても{丈夫|じょうぶ}に{作|つく}られているので、まちがえて{洗濯機|せんたくき}で{回|まわ}してもボロボロになりにくいのです。オーストラリアなど、プラスチックのお{札|さつ}を{使|つか}っている{国|くに}もあります。"},{"id":"D04-03","src":"Canva「みらいポケット⑤クイズ大会」／「お金のクイズ大会」","cat":1,"lv":1,"q":"{世界|せかい}で{最初|さいしょ}に{紙|かみ}のお金が{使|つか}われた{国|くに}はどこ？","c":["イタリア","インドネシア","{日本|にほん}","{中国|ちゅうごく}"],"a":3,"e":"正解は④ 中国。\n{今|いま}から1000{年|ねん}ほど{前|まえ}、{中国|ちゅうごく}の「{宋|そう}」という{王朝|おうちょう}の{時代|じだい}に{世界|せかい}で{初|はじ}めて{紙|かみ}のお金が{使|つか}われました。{紙|かみ}のお金は{軽|かる}くて{便利|べんり}ですが、にせものを{作|つく}る{人|ひと}も…。にせ{札|さつ}を{作|つく}った{人|ひと}は{死刑|しけい}になることもあったそうです。"},{"id":"D04-04","src":"Canva「みらいポケット⑤クイズ大会」","cat":3,"lv":1,"q":"100{円|えん}のおかしを{買|か}ったとき、レジではらうお金はいくら？","c":["100{円|えん}","108{円|えん}","110{円|えん}","200{円|えん}"],"a":1,"e":"正解は② 108円。\n{買|か}い{物|もの}をすると「{消費税|しょうひぜい}」という{税金|ぜいきん}がかかります。{食|た}べ{物|もの}や{新聞|しんぶん}は8％、それ{以外|いがい}は10％。100{円|えん}のおかしなら8{円|えん}の{消費税|しょうひぜい}がついて108{円|えん}です。{集|あつ}まった{税金|ぜいきん}は、{年金|ねんきん}・{医療|いりょう}・{子育|こそだ}てなど、みんなの{生活|せいかつ}を{支|ささ}えるために{使|つか}われます。"},{"id":"D04-05","src":"Canva「みらいポケット⑤クイズ大会」／「お金のクイズ 幼児用」","cat":4,"lv":1,"q":"{日本|にほん}で{初|はじ}めてのガチャガチャは、1{回|かい}いくらだった？","c":["1{円|えん}","10{円|えん}","50{円|えん}","100{円|えん}"],"a":1,"e":"正解は② 10円。\n1965{年|ねん}ごろにアメリカから「ガムボールマシン」がやってきて、それを{日本|にほん}の{会社|かいしゃ}が{発展|はってん}させたのがガチャガチャ。はじめは1{回|かい}10{円|えん}で、{中身|なかみ}はけしごむや{小|ちい}さなおもちゃでした。そのあと20{円|えん}→50{円|えん}→100{円|えん}と{上|あ}がり、{今|いま}は300{円|えん}や500{円|えん}のものも。{今|いま}では{世界中|せかいじゅう}で{大人気|だいにんき}です。"},{"id":"D04-06","src":"Canva「みらいポケット⑤クイズ大会」／「お金のクイズ大会」","cat":4,"lv":1,"q":"100{円|えん}で{買|か}えるものの{量|りょう}は、{物価|ぶっか}（ものの{値段|ねだん}）が{上|あ}がるとどうなる？","c":["ふえる（たくさん{買|か}える）","{減|へ}る（{少|すこ}ししか{買|か}えない）","{変|か}わらない","ゼロになる"],"a":1,"e":"正解は② 減る（少ししか買えない）。\n100{円|えん}のりんごが150{円|えん}になると、100{円|えん}ではりんごが{買|か}えなくなります。{同|おな}じ100{円|えん}でも、{物価|ぶっか}が{上|あ}がると{買|か}えるものは{減|へ}ってしまう。つまり「お金の{価値|かち}が{下|さ}がった」ということです。"},{"id":"D04-07","src":"Canva「みらいポケット⑤クイズ大会」／「お金の授業クイズ集」","cat":4,"lv":1,"q":"{商品|しょうひん}の{値段|ねだん}が{上|あ}がり{続|つづ}けることを{何|なん}という？","c":["デフレ","バブル","インフル","インフレ"],"a":3,"e":"正解は④ インフレ。\n「インフレーション」の{略|りゃく}で、ものの{値段|ねだん}がどんどん{上|あ}がり、お金の{価値|かち}が{下|さ}がることです。{反対|はんたい}に、ものの{値段|ねだん}がどんどん{下|さ}がってお金の{価値|かち}が{上|あ}がるのが「デフレ」。インフルはかぜの{仲間|なかま}の{病気|びょうき}ですね。"},{"id":"D04-08","src":"Canva「みらいポケット⑤クイズ大会」","cat":4,"lv":1,"q":"ものの{値段|ねだん}がどんどん{下|さ}がって、お金の{価値|かち}が{上|あ}がることを{何|なん}という？","c":["デフレ","バブル","インフレ","{円安|えんやす}"],"a":0,"e":"正解は① デフレ。\n「デフレーション」の{略|りゃく}。{値段|ねだん}が{下|さ}がるのは{買|か}う{人|ひと}にはうれしそうですが、{会社|かいしゃ}のもうけが{減|へ}ってお{給料|きゅうりょう}も{下|さ}がり、さらにものが{売|う}れなくなる…という{悪|わる}い{流|なが}れになりやすいのです。{日本|にほん}は{長|なが}い{間|あいだ}デフレでしたが、{最近|さいきん}は{値段|ねだん}が{上|あ}がるインフレになっています。"},{"id":"D04-09","src":"Canva「みらいポケット⑤クイズ大会」／「お金の授業クイズ集」","cat":4,"lv":1,"q":"{経済|けいざい}のことばの「バブル」を{日本語|にほんご}にすると？","c":["シャボン{玉|だま}（あわ）","{大|おお}きな{風船|ふうせん}","{海|うみ}の{波|なみ}","{雪|ゆき}だるま"],"a":0,"e":"正解は① シャボン玉（あわ）。\nものの{値段|ねだん}が{本当|ほんとう}の{価値|かち}より{高|たか}くなりすぎた{状態|じょうたい}を、ふくらんだシャボン{玉|だま}にたとえて「バブル」といいます。たとえば{定価|ていか}5{万円|まんえん}のゲーム{機|き}が「みんなほしい！」で10{万円以上|まんえんいじょう}になるような{状態|じょうたい}。でもシャボン{玉|だま}はふくらみすぎるといつかはじけて、{急|きゅう}に{売|う}る{人|ひと}がふえて{値段|ねだん}が{一気|いっき}に{下|さ}がります。これが「バブル{崩壊|ほうかい}」です。"},{"id":"D04-10","src":"Canva「みらいポケット⑤クイズ大会」","cat":5,"lv":1,"q":"{銀行|ぎんこう}にお金をあずけておくと、お{礼|れい}に{少|すこ}しだけお金をもらえます。このお金を{何|なん}という？","c":["{税金|ぜいきん}","おこづかい","{利息|りそく}","お{年玉|としだま}"],"a":2,"e":"正解は③ 利息。\n1{万円|まんえん}を{銀行|ぎんこう}にあずけると、1{年後|ねんご}に{利息|りそく}がついて1{万|まん}30{円|えん}くらいになります（{金利|きんり}0.3％のとき）。この「0.3％」のことを{金利|きんり}といいます。2023{年|ねん}までは{金利|きんり}が0.001％で、1{万円|まんえん}あずけても{利息|りそく}はたったの0.1{円|えん}でした。"},{"id":"D04-11","src":"Canva「みらいポケット⑤クイズ大会」","cat":5,"lv":1,"q":"{銀行|ぎんこう}の{主|おも}な{役割|やくわり}として{正|ただ}しいものはどれ？","c":["{品物|しなもの}を{仕入|しい}れて{売|う}る","{新|あたら}しいお{札|さつ}を{印刷|いんさつ}する","あずかったお金を{金庫|きんこ}にしまっておく","{人|ひと}や{会社|かいしゃ}にお金を{貸|か}す"],"a":3,"e":"正解は④ 人や会社にお金を貸す。\n{銀行|ぎんこう}は{私|わたし}たちがあずけたお金を、{家|いえ}を{買|か}いたい{人|ひと}や{工場|こうじょう}を{作|つく}りたい{会社|かいしゃ}に{貸|か}して、{利息|りそく}をもらっています。そのもうけの{一部|いちぶ}が、あずけた{人|ひと}への{利息|りそく}になるのです。お{札|さつ}を{印刷|いんさつ}するのは{国立印刷局|こくりついんさつきょく}の{仕事|しごと}です。"},{"id":"D04-12","src":"Canva「みらいポケット⑤クイズ大会」","cat":1,"lv":1,"q":"{日本|にほん}では「{円|えん}」、アメリカでは「ドル」が{使|つか}われています。1ドルを{買|か}うのに100{円|えん}だったのが150{円|えん}{必要|ひつよう}になることを{何|なん}という？","c":["{円安|えんやす}","{円高|えんだか}","{円高|えんだか}ドル{安|やす}","インフレ"],"a":0,"e":"正解は① 円安。\n1ドルを{買|か}うのにより{多|おお}くの{円|えん}が{必要|ひつよう}になった＝ドルにくらべて{円|えん}の{価値|かち}が「{安|やす}く」なった、ということです。2010{年|ねん}ごろは1ドル80{円|えん}くらいでしたが、{{FXDATE}}の{相場|そうば}は{{RATE:USD}}。{円安|えんやす}になると{外国|がいこく}のものや{海外旅行|かいがいりょこう}が{高|たか}くなります。「{数字|すうじ}が{大|おお}きくなる＝{円安|えんやす}」と{覚|おぼ}えましょう。"},{"id":"D05-01","src":"Canva「給料お金のクイズ」","cat":7,"lv":1,"q":"{求人票|きゅうじんひょう}に「{月給|げっきゅう}20{万円|まんえん}」と{書|か}いてありました。{実際|じっさい}に{銀行|ぎんこう}にふりこまれる{金額|きんがく}は？","c":["そのまま20{万円|まんえん}","20{万円|まんえん}より{少|すく}ない","20{万円|まんえん}より{多|おお}い","{月|つき}によってちがう"],"a":1,"e":"正解は② 20万円より少ない。\nお{給料|きゅうりょう}からは、{税金|ぜいきん}（{所得税|しょとくぜい}・{住民税|じゅうみんぜい}）や{社会保険料|しゃかいほけんりょう}（{年金|ねんきん}・{健康保険|けんこうほけん}など）があらかじめ{引|ひ}かれます。20{万円|まんえん}なら、{手元|てもと}に{残|のこ}るのは16{万円前後|まんえんぜんご}。この{引|ひ}かれたあとの{金額|きんがく}を「{手取|てど}り」といいます。"},{"id":"D05-02","src":"Canva「給料お金のクイズ」","cat":7,"lv":1,"q":"お{給料|きゅうりょう}の{話|はなし}でよく{聞|き}く「{手取|てど}り」とは、どれのこと？","c":["{求人票|きゅうじんひょう}に{書|か}いてある{月給|げっきゅう}の{金額|きんがく}","{会社|かいしゃ}が{計算|けいさん}して{引|ひ}いてくれる{金額|きんがく}","{実際|じっさい}に{自分|じぶん}の{口座|こうざ}に{入|はい}る{金額|きんがく}","{手|て}でもらう{現金|げんきん}のこと"],"a":2,"e":"正解は③ 実際に自分の口座に入る金額。\n{手取|てど}り＝{実際|じっさい}にもらえるお金。{求人票|きゅうじんひょう}の「{月給|げっきゅう}」から{税金|ぜいきん}や{社会保険料|しゃかいほけんりょう}を{引|ひ}いた{残|のこ}りです。{生活|せいかつ}の{計画|けいかく}を{立|た}てるときは、{月給|げっきゅう}ではなく{手取|てど}りで{考|かんが}えるのが{大事|だいじ}です。"},{"id":"D05-03","src":"Canva「給料お金のクイズ」","cat":7,"lv":2,"q":"{月給|げっきゅう}が{同|おな}じ2{人|ふたり}がいます。{手取|てど}りの{金額|きんがく}について「まちがっている」のは？","c":["2{人|ふたり}とも{絶対|ぜったい}に{同|おな}じ","{住|す}んでいる{場所|ばしょ}で{変|か}わる","{家族構成|かぞくこうせい}によって{変|か}わる","{加入|かにゅう}している{保険|ほけん}で{変|か}わる"],"a":0,"e":"正解は① 2人とも絶対に同じ。\n{住民税|じゅうみんぜい}は{住|す}んでいる{市町村|しちょうそん}で{少|すこ}しちがい、{養|やしな}っている{家族|かぞく}がいると{税金|ぜいきん}が{安|やす}くなる「{扶養控除|ふようこうじょ}」もあります。{同|おな}じ{月給|げっきゅう}でも、{手取|てど}りは{人|ひと}によって{変|か}わるのです。"},{"id":"D05-04","src":"Canva「給料お金のクイズ」","cat":7,"lv":2,"q":"{会社員|かいしゃいん}（サラリーマン）の{税金|ぜいきん}のはらい{方|かた}として{正|ただ}しいのは？","c":["{全部自分|ぜんぶじぶん}で{申告|しんこく}してはらう","{会社|かいしゃ}がお{給料|きゅうりょう}から{引|ひ}いてはらってくれる","バレるまではらわなくていい","{税金|ぜいきん}ははらわなくていい"],"a":1,"e":"正解は② 会社がお給料から引いてはらってくれる。\nこれを「{源泉徴収|げんせんちょうしゅう}」といいます。ただし{会社員|かいしゃいん}でも、ふるさと{納税|のうぜい}・{住宅|じゅうたく}ローン{減税|げんぜい}・{副業|ふくぎょう}・{医療費|いりょうひ}がたくさんかかった{年|とし}などは、{自分|じぶん}で「{確定申告|かくていしんこく}」をするとお金がもどってくることがあります。"},{"id":"D05-05","src":"Canva「給料お金のクイズ」","cat":7,"lv":2,"q":"{求人票|きゅうじんひょう}に「{月給|げっきゅう}25{万円|まんえん}（{固定残業代|こていざんぎょうだい}30{時間分|じかんぶん}をふくむ）」と{書|か}いてありました。その{月|つき}の{残業|ざんぎょう}が20{時間|じかん}だったら、お{給料|きゅうりょう}はどうなる？","c":["10{時間分|じかんぶん}の{残業代|ざんぎょうだい}（{割増|わりまし}）が{引|ひ}かれる","10{時間分|じかんぶん}の{給料|きゅうりょう}（{割増|わりまし}なし）が{引|ひ}かれる","{月給|げっきゅう}25{万円|まんえん}のまま","{残業|ざんぎょう}20{時間分|じかんぶん}が{追加|ついか}でもらえる"],"a":2,"e":"正解は③ 月給25万円のまま。\n{固定残業代|こていざんぎょうだい}とは、{実際|じっさい}に{残業|ざんぎょう}してもしなくても、あらかじめ{決|き}めた{時間分|じかんぶん}をお{給料|きゅうりょう}にふくめてはらう{仕組|しく}み。30{時間|じかん}より{少|すく}なくても{引|ひ}かれませんし、{逆|ぎゃく}に30{時間|じかん}をこえた{分|ぶん}は{追加|ついか}ではらわれます。{例外|れいがい}として、{夜|よる}10{時以降|じいこう}の{深夜残業代|しんやざんぎょうだい}は{別|べつ}にはらわれます。"},{"id":"D06-01","src":"Canva「お金のクイズ大会」","cat":1,"lv":1,"q":"お金がなかった{時代|じだい}、{人|ひと}はほしいものをどうやって{手|て}に{入|い}れていた？","c":["{人々交換|ひとびとこうかん}","{物々交換|ぶつぶつこうかん}","{時間交換|じかんこうかん}","お{気持|きも}ち{交換|こうかん}"],"a":1,"e":"正解は② 物々交換。\n{自分|じぶん}が{持|も}っている{物|もの}（りんごなど）と、{相手|あいて}が{持|も}っている{物|もの}（{魚|さかな}など）を{直接|ちょくせつ}とりかえることです。でも、おたがいがほしい{物|もの}を{持|も}っているとはかぎらず、とても{不便|ふべん}でした。この{不便|ふべん}さをなくすために{生|う}まれたのが「お金」なのです。"},{"id":"D06-02","src":"Canva「お金のクイズ大会」","cat":7,"lv":1,"q":"{相撲界|すもうかい}の{頂点|ちょうてん}「{横綱|よこづな}」。2024{年|ねん}の{横綱|よこづな}{照|てる}ノ{富士|ふじ}の{年収|ねんしゅう}はいくらくらいだった？","c":["{約|やく}4,800{万円|まんえん}","{約|やく}6,600{万円|まんえん}","{約|やく}1{億円|おくえん}","{約|やく}1{億|おく}5,000{万円|まんえん}"],"a":2,"e":"正解は③ 約1億円。\n{横綱|よこづな}の{月給|げっきゅう}は300{万円|まんえん}（{年|ねん}3,600{万円|まんえん}）。それに{優勝賞金|ゆうしょうしょうきん}（1{回|かい}1,000{万円|まんえん}）や{懸賞金|けんしょうきん}、{力士褒賞金|りきしほうしょうきん}などが{上乗|うわの}せされます。{照|てる}ノ{富士|ふじ}の2024{年|ねん}は、6つの{場所|ばしょ}のうち4つ{休|やす}んで2つ{優勝|ゆうしょう}して{約|やく}1{億円|おくえん}でした。{照|てる}ノ{富士|ふじ}は2025{年|ねん}1{月|がつ}に{引退|いんたい}し、{今|いま}の{横綱|よこづな}は{豊昇龍|ほうしょうりゅう}と{大|おお}の{里|さと}。2027{年|ねん}1{月|がつ}からは{横綱|よこづな}の{月給|げっきゅう}が330{万円|まんえん}、{優勝賞金|ゆうしょうしょうきん}が2,000{万円|まんえん}に{上|あ}がります（{日本相撲協会|にほんすもうきょうかい}が2026{年|ねん}に{決定|けってい}）。ちなみにプロ{野球選手|やきゅうせんしゅ}の{平均|へいきん}は{約|やく}4,000{万円|まんえん}、{大谷翔平選手|おおたにしょうへいせんしゅ}は10{年|ねん}で7{億|おく}ドル＝{{FXDATE}}の{相場|そうば}なら{{FX:USD:700000000}}！"},{"id":"D06-03","src":"Canva「お金のクイズ大会」","cat":1,"lv":1,"q":"アメリカのお金「ドル」を{漢字|かんじ}で{書|か}くと？（ヒント：ドルのマーク「$」の{形|かたち}）","c":["{取|どる}","{米円|べいえん}","{度留|どる}","{弗|どる}"],"a":3,"e":"正解は④ 弗。\n「$」のマークと{見|み}た{目|め}がそっくりなので、この{漢字|かんじ}が{選|えら}ばれました。「{弗|ふつ}」は{本来|ほんらい}「フツ」と{読|よ}む{漢字|かんじ}で、{歯|は}みがき{粉|こ}などに{入|はい}っている「フッ{素|そ}（{弗素|ふっそ}）」にも{使|つか}われています。"},{"id":"D06-04","src":"Canva「お金のクイズ大会」","cat":2,"lv":1,"q":"2024{年|ねん}に{発行|はっこう}された{新|あたら}しいお{札|さつ}は、{角度|かくど}を{変|か}えると{人物|じんぶつ}の{顔|かお}の{絵|え}が…？","c":["{消|き}える","{動|うご}いて{見|み}える","{分身|ぶんしん}して{見|み}える","{大|おお}きく{見|み}える"],"a":1,"e":"正解は② 動いて見える。\n「ストライプ{型|がた}ホログラム」という{最先端|さいせんたん}の{技術|ぎじゅつ}で、{顔|かお}の{絵|え}が3Dで{表現|ひょうげん}され、{角度|かくど}によってくるっと{回転|かいてん}して{見|み}えます。この{技術|ぎじゅつ}をお{札|さつ}に{使|つか}ったのは{世界|せかい}で{初|はじ}めて！ にせ{札|さつ}を{作|つく}られないようにするための{工夫|くふう}です。{家|いえ}にあったら、ぜひかたむけて{見|み}てみてください。"},{"id":"D06-05","src":"Canva「お金のクイズ大会」解説より","cat":3,"lv":1,"q":"ポテトチップスなど{体|からだ}によくない{食|た}べ{物|もの}に{税金|ぜいきん}をかける「ポテトチップス{税|ぜい}」がある{国|くに}は？","c":["ハンガリー","{日本|にほん}","{中国|ちゅうごく}","オーストラリア"],"a":0,"e":"正解は① ハンガリー。\n「{国民|こくみん}に{健康|けんこう}になってほしい」という{願|ねが}いで、{塩|しお}や{砂糖|さとう}の{多|おお}いおかしに{税金|ぜいきん}をかけています。フランス・メキシコ・アメリカにも「{砂糖税|さとうぜい}・ソーダ{税|ぜい}」という{似|に}た{税金|ぜいきん}があり、{世界保健機関|せかいほけんきかん}（WHO）もおすすめしています。{税金|ぜいきん}には「お金を{集|あつ}める」だけでなく「{人|ひと}の{行動|こうどう}を{変|か}える」{役割|やくわり}もあるのです。"},{"id":"D06-06","src":"Canva「お金のクイズ大会」解説より","cat":3,"lv":1,"q":"{結婚|けっこん}していない{人|ひと}から{税金|ぜいきん}をとる「{独身税|どくしんぜい}」。{昔|むかし}、この{税金|ぜいきん}があった{国|くに}は？","c":["ブルガリア","{日本|にほん}","アメリカ","{中国|ちゅうごく}"],"a":0,"e":"正解は① ブルガリア。\n1968{年|ねん}から1989{年|ねん}までの21{年間|ねんかん}、{子|こ}どもが{減|へ}っていたブルガリアで「{結婚|けっこん}して{家庭|かてい}を{持|も}ってほしい」と{独身|どくしん}の{人|ひと}から{税金|ぜいきん}をとっていました。ところが{税金|ぜいきん}のせいでお金がなくなり、{生|う}まれる{子|こ}どもはかえって{減|へ}ってしまい、{廃止|はいし}に…。{税金|ぜいきん}の{使|つか}い{方|かた}をまちがえると{逆効果|ぎゃくこうか}になる{例|れい}です。"},{"id":"D06-07","src":"Canva「お金のクイズ大会」解説より","cat":3,"lv":1,"q":"{日本|にほん}に「うさぎ{税|ぜい}」があったのは、いつの{時代|じだい}？","c":["{江戸時代|えどじだい}","{明治時代|めいじじだい}","{昭和時代|しょうわじだい}","{平成時代|へいせいじだい}"],"a":1,"e":"正解は② 明治時代。\n1873{年|ねん}（{明治|めいじ}6{年|ねん}）ごろ、うさぎを{飼|か}うのが{大流行|だいりゅうこう}。めずらしいうさぎが{今|いま}のお金で{何百万円|なんびゃくまんえん}にもなり、にせもの{売|う}りやサギもふえました。そこで{東京|とうきょう}では、うさぎ1{羽|わ}につき{毎月税金|まいつきぜいきん}をとって{流行|りゅうこう}を{落|お}ち{着|つ}かせたのです。{流行|りゅうこう}がおさまると、{数年|すうねん}でなくなりました。"},{"id":"D07-01","src":"Canva「お金のクイズ 幼児用」","cat":1,"lv":1,"q":"{昔|むかし}のドイツで、お金が{足|た}りなくなって{作|つく}られた「ノートゲルト」というお金。{何|なに}でできていた？","c":["{木|き}","{水|みず}","{氷|こおり}","{砂|すな}"],"a":0,"e":"正解は① 木。\n{約|やく}100{年前|ねんまえ}のドイツでは{戦争|せんそう}のあとでお金が{足|た}りなくなり、{町|まち}ごとに{木|き}や{布|ぬの}、{皮|かわ}などで「ノートゲルト（{緊急|きんきゅう}のお金）」を{作|つく}りました。{世界|せかい}には{石|いし}のお金「フェイ」や{貝|かい}のお金もあり、オーストラリアには{真|ま}ん{中|なか}がとうめいなプラスチックのお{札|さつ}もあります。"},{"id":"D07-02","src":"Canva「お金のクイズ 幼児用」","cat":4,"lv":1,"q":"1963{年|ねん}にできた{赤|あか}い{建物|たてもの}「{神戸|こうべ}ポートタワー」。{建|た}てるのにかかったお金は？","c":["{約|やく}1{億円|おくえん}","{約|やく}3{億円|おくえん}","{約|やく}30{億円|おくえん}","{約|やく}300{億円|おくえん}"],"a":1,"e":"正解は② 約3億円。\n{高|たか}さ108mの{神戸|こうべ}のシンボルで、「{鉄塔|てっとう}の{美女|びじょ}」ともよばれています。1963{年|ねん}の3{億円|おくえん}は、{今|いま}のお金にすると{何十億円|なんじゅうおくえん}にもなります。{昔|むかし}と{今|いま}では、お金の{価値|かち}が{大|おお}きくちがうのです。"},{"id":"D08-01","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"{英語|えいご}のことわざ「Time is money.（タイム イズ マニー）」の{意味|いみ}は？","c":["お金を{使|つか}えば{時間|じかん}が{買|か}える","{時間|じかん}はお金と{同|おな}じくらい{大切|たいせつ}。ムダにしないように","{時間|じかん}があればお金がふえる","{時計|とけい}はとても{高|たか}い"],"a":1,"e":"正解は② 時間はお金と同じくらい大切。ムダにしないように。\n「{時|とき}は{金|かね}なり」と{日本語|にほんご}でもいいます。{時間|じかん}はお金と{同|おな}じくらい（それ{以上|いじょう}に）{貴重|きちょう}なもの。お金はあとから{取|と}りもどせますが、{過|す}ぎた{時間|じかん}は{二度|にど}ともどってきません。"},{"id":"D08-02","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"{英語|えいご}のことわざ「A penny saved is a penny earned.（ア ペニー セイヴド イズ ア ペニー アーンド）」の{意味|いみ}は？","c":["お金をためるのは、かせぐのと{同|おな}じくらい{価値|かち}がある","1ペニーはとても{安|やす}い","お金はためるより{使|つか}え","ペニーを{拾|ひろ}うとラッキー"],"a":0,"e":"正解は① お金をためるのは、かせぐのと同じくらい価値がある。\n{直訳|ちょくやく}は「1ペニーの{節約|せつやく}は1ペニーの{収入|しゅうにゅう}」。ペニーはイギリスやアメリカの{一番小|いちばんちい}さいお金の{単位|たんい}です。ムダづかいをやめて100{円|えん}{残|のこ}すのは、100{円|えん}かせいだのと{同|おな}じ、ということ。"},{"id":"D08-03","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"{英語|えいご}のことわざ「Money doesn't grow on trees.（マニー ダズント グロー オン トゥリーズ）」の{意味|いみ}は？","c":["{木|き}からお金が{生|は}えることもある","お金は{自然|しぜん}には{手|て}に{入|はい}らない。{努力|どりょく}が{必要|ひつよう}","{木|き}を{植|う}えるとお金{持|も}ちになれる","お金は{森|もり}で{見|み}つかる"],"a":1,"e":"正解は② お金は自然には手に入らない。努力が必要。\n{直訳|ちょくやく}は「お金は{木|き}に{生|は}えない」。おうちの{人|ひと}が「お金は{木|き}になるものじゃないのよ」と{言|い}うときと{同|おな}じで、お金はだれかがはたらいて{生|う}み{出|だ}したもの、ということを{教|おし}えています。"},{"id":"D08-04","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"{英語|えいご}のことわざ「Easy come, easy go.（イージー カム、イージー ゴウ）」の{意味|いみ}は？","c":["お金は{意外|いがい}と{手|て}に{入|はい}りやすい","{簡単|かんたん}に{手|て}に{入|はい}ったお金は、すぐになくなってしまう","お金は{簡単|かんたん}に{行|い}ったり{来|き}たりする","{楽|らく}してかせぐのが{一番|いちばん}"],"a":1,"e":"正解は② 簡単に手に入ったお金は、すぐになくなってしまう。\n{直訳|ちょくやく}は「{得|え}やすいものは{失|うしな}いやすい」。{苦労|くろう}して{手|て}に{入|い}れたお金は{大事|だいじ}に{使|つか}いますが、{楽|らく}に{手|て}に{入|はい}ったお金はついムダづかいしてしまう…{人間|にんげん}のそんな{性質|せいしつ}をあらわしたことわざです。"},{"id":"D08-05","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"ドイツのことわざ「Geld allein macht nicht glücklich.（ゲルト アライン マハト ニヒト グリュックリヒ）」の{意味|いみ}は？","c":["お金だけでは{幸|しあわ}せになれない","お金があれば{幸|しあわ}せになれる","お金は{幸|しあわ}せを{作|つく}る","ドイツ{人|じん}はお金が{好|す}き"],"a":0,"e":"正解は① お金だけでは幸せになれない。\nお金は{大事|だいじ}だけど、{心|こころ}のゆたかさも{同|おな}じくらい{大切|たいせつ}、という{教|おし}え。フランスにも「L'argent ne fait pas le bonheur.（お金は{幸|しあわ}せを{作|つく}らない）」というそっくりなことわざがあります。{世界共通|せかいきょうつう}の{考|かんが}え{方|かた}なんですね。"},{"id":"D08-06","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"イタリアのことわざ「I soldi non fanno la felicità, ma aiutano.（イ ソルディ ノン ファンノ ラ フェリチタ、マ アユータノ）」の{意味|いみ}は？","c":["お金は{幸|しあわ}せを{作|つく}れないけど、{助|たす}けにはなる","お金があれば{何|なん}でもできる","お金は{幸|しあわ}せそのもの","お金は{必要|ひつよう}ない"],"a":0,"e":"正解は① お金は幸せを作れないけど、助けにはなる。\nドイツやフランスのことわざに「ma aiutano（でも{助|たす}けにはなる）」がついた、ちょっと{現実的|げんじつてき}なバージョン。お金そのものは{幸|しあわ}せではないけれど、{生|い}きやすくしてくれる。イタリアらしい{正直|しょうじき}なことわざです。"},{"id":"D08-07","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"{中国|ちゅうごく}のことわざ「{省下便是賺下|ション シァ ビエン シー ジュアン シァ}」の{意味|いみ}は？","c":["お金を{使|つか}わないことは、もうけているのと{同|おな}じ","{使|つか}わないお金はなくなる","かせいだら{全部使|ぜんぶつか}おう","{中国|ちゅうごく}では{節約|せつやく}しない"],"a":0,"e":"正解は① お金を使わないことは、もうけているのと同じ。\n「{節約|せつやく}はそのままかせぎ」という{意味|いみ}。{英語|えいご}の「A penny saved is a penny earned.」とそっくりですね。ムダづかいをしないことの{大切|たいせつ}さは、{国|くに}がちがっても{同|おな}じです。"},{"id":"D08-08","src":"Canva「お金のクイーズ(海外ことわざ編)」","cat":6,"lv":1,"q":"{中国|ちゅうごく}のことわざ「{有錢能使鬼推磨|ヨウ チエン ノン シー グイ トゥイ モー}」の{意味|いみ}は？","c":["お金があれば、{鬼|おに}でもはたらかせられる（{何|なん}でもできる）","{鬼|おに}はお金がきらい","お金があると{鬼|おに}が{来|く}る","{石臼|いしうす}はとても{高|たか}い"],"a":0,"e":"正解は① お金があれば、鬼でもはたらかせられる（何でもできる）。\n{直訳|ちょくやく}は「お金があれば{鬼|おに}に{石臼|いしうす}をひかせることもできる」。お金の{力|ちから}の{強|つよ}さを{正直|しょうじき}にあらわしたことわざです。{英語圏|えいごけん}は「{努力|どりょく}・{時間|じかん}・{節約|せつやく}」、ヨーロッパは「お金と{幸|しあわ}せのバランス」、{中国|ちゅうごく}は「{現実的|げんじつてき}なお金の{力|ちから}」と、{国|くに}によってお金の{見方|みかた}がちがうのもおもしろいですね。"},{"id":"D09-01","src":"Canva「2025 YOXOフェス 大人のマネリテ検定」","cat":5,"lv":2,"q":"1{億円|おくえん}を{金利|きんり}0.001％の{銀行|ぎんこう}に1{年間|ねんかん}あずけたとき、もらえる{利息|りそく}はいくら？","c":["100{円|えん}","1,000{円|えん}","10,000{円|えん}","100,000{円|えん}"],"a":1,"e":"正解は② 1,000円。\n1{億円|おくえん}×0.001％＝1,000{円|えん}。1{億円|おくえん}あずけても1{年|ねん}で1,000{円|えん}しかふえません。これが2023{年|ねん}までの{日本|にほん}の{銀行|ぎんこう}の{金利|きんり}でした。{今|いま}は{金利|きんり}が0.3％くらいまで{上|あ}がったので、{同|おな}じ1{億円|おくえん}で30{万円|まんえん}。それでも{物価|ぶっか}が{上|あ}がるスピードのほうが{速|はや}いと、{貯金|ちょきん}だけではお金の{価値|かち}は{守|まも}れません。"},{"id":"D09-02","src":"Canva「2025 YOXOフェス 大人のマネリテ検定」","cat":5,"lv":2,"q":"{国民年金|こくみんねんきん}を40{年間|ねんかん}{満額|まんがく}おさめた{場合|ばあい}、1か{月|げつ}にもらえる{年金|ねんきん}はいくら？","c":["{約|やく}5{万円|まんえん}","{約|やく}7{万円|まんえん}","{約|やく}9{万円|まんえん}","{約|やく}12{万円|まんえん}"],"a":1,"e":"正解は② 約7万円。\n20{歳|さい}から60{歳|さい}までの40{年間|ねんかん}すべておさめると、2025{年度|ねんど}は{月額|げつがく}69,308{円|えん}（{年|ねん}{約|やく}83{万円|まんえん}）。おさめた{月数|つきすう}が{少|すく}ないとその{分減|ぶんへ}り、{実際|じっさい}の{平均|へいきん}は{月|つき}5{万円台|まんえんだい}です。{会社員|かいしゃいん}はこれに{厚生年金|こうせいねんきん}が{上乗|うわの}せされます。{金額|きんがく}は{毎年|まいとし}4{月|がつ}に{見直|みなお}されるので、{最新|さいしん}の{数字|すうじ}は{日本年金機構|にほんねんきんきこう}で{確認|かくにん}を。"},{"id":"D09-03","src":"Canva「2025 YOXOフェス 大人のマネリテ検定」","cat":7,"lv":2,"q":"{会社員|かいしゃいん}が{税金|ぜいきん}を{安|やす}くする（{節税|せつぜい}）には、{何|なに}をふやせばいい？","c":["{基本給|きほんきゅう}","{残業代|ざんぎょうだい}","{所得控除|しょとくこうじょ}","{労働時間|ろうどうじかん}"],"a":2,"e":"正解は③ 所得控除。\n{税金|ぜいきん}は「{給与|きゅうよ}－{給与所得控除|きゅうよしょとくこうじょ}－{所得控除|しょとくこうじょ}＝{課税所得|かぜいしょとく}」に{対|たい}してかかります。{所得控除|しょとくこうじょ}（{医療費控除|いりょうひこうじょ}・{生命保険料控除|せいめいほけんりょうこうじょ}・{扶養控除|ふようこうじょ}など15{種類|しゅるい}）をふやすと{課税所得|かぜいしょとく}が{減|へ}り、{結果|けっか}として{税金|ぜいきん}が{安|やす}くなります。{年末調整|ねんまつちょうせい}や{確定申告|かくていしんこく}で{忘|わす}れずに{申請|しんせい}しましょう。"},{"id":"D09-04","src":"Canva「2025 YOXOフェス 大人のマネリテ検定」","cat":5,"lv":2,"q":"{年金|ねんきん}のお金を{運用|うんよう}している「GPIF」。Gは{次|つぎ}のどれ？","c":["Gold（{金|きん}）","Government（{政府|せいふ}）","GDP","G20"],"a":1,"e":"正解は② Government（政府）。\nGovernment（{政府|せいふ}）Pension（{年金|ねんきん}）Investment（{投資|とうし}）Fund（{基金|ききん}）＝{年金積立金管理運用独立行政法人|ねんきんつみたてきんかんりうんようどくりつぎょうせいほうじん}。{将来|しょうらい}の{年金|ねんきん}のためにお金を{国内外|こくないがい}の{株|かぶ}や{債券|さいけん}に4{分|ぶん}の1ずつ{分散|ぶんさん}して{運用|うんよう}していて、{運用資産|うんようしさん}は{約|やく}248{兆円|ちょうえん}、{累積|るいせき}で{約|やく}153{兆円|ちょうえん}ふやしています（2024{年|ねん}9{月時点|がつじてん}）。"},{"id":"D09-05","src":"Canva「2025 YOXOフェス 大人のマネリテ検定」","cat":5,"lv":2,"q":"1950{年以降|ねんいこう}、アメリカの{主要|しゅよう}500{社|しゃ}の{株|かぶ}に{投資|とうし}する「S&P500」を{買|か}った{場合|ばあい}、{何年以上|なんねんいじょう}{持|も}ち{続|つづ}けていれば{必|かなら}ずプラスになっている？","c":["5{年|ねん}","10{年|ねん}","15{年|ねん}","20{年|ねん}"],"a":2,"e":"正解は③ 15年。\n{世界恐慌|せかいきょうこう}やリーマンショックなど{大|おお}きく{下|さ}がる{時期|じき}はあっても、1950{年以降|ねんいこう}はどのタイミングで{買|か}っていても、15{年以上|ねんいじょう}{持|も}ち{続|つづ}ければ{必|かなら}ずプラスになっています。{短|みじか}い{期間|きかん}では{損|そん}をすることもあるので、{投資|とうし}は「{長|なが}い{目|め}で{見|み}る」ことが{大切|たいせつ}です。（{過去|かこ}のデータであり、{将来|しょうらい}を{保証|ほしょう}するものではありません）"}];
+  const BUILD = "2026-09-14";
+  const RATES0 = {"date": "2026-09-11", "USD": 154.04, "CHF": 188.93, "EUR": 178.56};   // ビルド時の為替（date, USD, CHF, EUR ＝ 1通貨あたりの円）
+  const CATS = { 1: "せかいのお金", 2: "日本のお金", 3: "ぜいきん", 4: "ものの値段", 5: "銀行・ためる", 6: "ことわざ", 7: "はたらく・お給料" };
+  const N = 10;
+  const NUM = ["①", "②", "③", "④"];
+  const LS = { seen: "okane_seen", hist: "okane_hist", lv: "okane_lv", ruby: "okane_ruby", sound: "okane_sound", rates: "okane_rates" };
+  const CURNAME = { USD: "ドル", CHF: "スイスフラン", EUR: "ユーロ" };
+
+  const $ = (id) => document.getElementById(id);
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function loadLS(key, def) { try { const v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); } catch (e) { return def; } }
+  function saveLS(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  // {漢字|よみ} → <ruby>漢字<rt>よみ</rt></ruby>
+  function rb(s) { return esc(s).replace(/\{([^{}|]+)\|([^{}|]+)\}/g, "<ruby>$1<rt>$2</rt></ruby>"); }
+  function plain(s) { return String(s).replace(/\{([^{}|]+)\|([^{}|]+)\}/g, "$1"); }
+  function icon(cat) { return `<svg aria-hidden="true"><use href="#ic-${cat}"></use></svg>`; }
+
+  // ---------- 為替（物価の問題を「その日の相場」で計算する） ----------
+  // ビルド時の相場を初期値にし、前回ネットで取れた相場（localStorage）があればそれを優先。
+  // さらにページを開いたとき frankfurter.dev（ECB公表レート）から最新を取り、取れたら置き換える。
+  let RATES = Object.assign({}, RATES0);
+  (function () {
+    const c = loadLS(LS.rates, null);
+    if (c && c.date && c.USD && c.CHF && c.EUR && (!RATES.date || c.date >= RATES.date)) RATES = Object.assign({}, c, { cached: true });
+  })();
+  function hasRate(cur) { return typeof RATES[cur] === "number" && RATES[cur] > 0; }
+  function nice(v) { if (v >= 2000) return Math.round(v / 500) * 500; if (v >= 300) return Math.round(v / 100) * 100; return Math.round(v / 10) * 10; }
+  function jp(n) { return Number(n).toLocaleString("ja-JP"); }
+  function yenText(v) {
+    if (v >= 1e8) { const n = v / 1e8; return "約" + jp(n >= 100 ? Math.round(n) : Math.round(n * 10) / 10) + "億円"; }
+    if (v >= 1e5) return "約" + jp(Math.round(v / 1e4)) + "万円";
+    return "約" + jp(nice(v)) + "円";
+  }
+  function fmtDate(iso) { const p = String(iso || "").split("-").map(Number); return p.length === 3 && p[0] ? `${p[0]}年${p[1]}月${p[2]}日` : ""; }
+  function rateText(cur) { return `1${CURNAME[cur] || cur}＝${RATES[cur].toFixed(1)}円`; }
+  // {{FX:CHF:29.5}} → 約5,500円 / {{RATE:USD}} → 1ドル＝154.0円 / {{FXDATE}} → 2026年9月11日
+  function fx(s) {
+    return String(s)
+      .replace(/\{\{FX:([A-Z]{3}):([\d.]+)\}\}/g, (m, cur, amt) => hasRate(cur) ? yenText(Number(amt) * RATES[cur]) : m)
+      .replace(/\{\{RATE:([A-Z]{3})\}\}/g, (m, cur) => hasRate(cur) ? rateText(cur) : m)
+      .replace(/\{\{FXDATE\}\}/g, () => fmtDate(RATES.date));
+  }
+  // 出題用に展開した問題を作る（fx を持つ問題は選択肢を 1/4・1/2・1倍・2倍 で作り、正解は1倍）
+  function mat(q) {
+    const m = { id: q.id, src: q.src, cat: q.cat, lv: q.lv, q: fx(q.q) };
+    if (q.fx) {
+      const yen = q.fx.amount * RATES[q.fx.cur];
+      let vals = [yen / 4, yen / 2, yen, yen * 2].map(nice);
+      if (new Set(vals).size < 4) vals = [yen / 5, yen / 2, yen, yen * 3].map(nice);
+      m.c = vals.map(v => "約" + jp(v) + "円");
+      m.a = 2;
+      m.e = "正解は③ " + m.c[2] + "。\n" + fx(q.e);
+    } else {
+      m.c = q.c.map(fx); m.a = q.a; m.e = fx(q.e);
+    }
+    return m;
+  }
+  function renderRateLine() {
+    const el = $("fxLine");
+    if (!hasRate("USD") || !hasRate("CHF")) { el.hidden = true; return; }
+    const how = RATES.live ? "いま取ってきた最新の相場" : (RATES.cached ? "前回ネットで取った相場" : "もんだいデータを作ったときの相場");
+    el.innerHTML = `きょうの為替: <b>${esc(rateText("USD"))}</b>・<b>${esc(rateText("CHF"))}</b>（${esc(fmtDate(RATES.date))}・${how}）。外国の値段の問題は、この相場で日本円に計算します。`;
+    el.hidden = false;
+  }
+  function liveRates() {
+    if (!window.fetch || !navigator.onLine) return;
+    fetch("https://api.frankfurter.dev/v1/latest?to=JPY,USD,CHF", { cache: "no-store" })
+      .then(r => r.ok ? r.json() : null)
+      .then(j => {
+        if (!j || !j.rates || !j.rates.JPY || !j.rates.USD || !j.rates.CHF) return;
+        const r = { date: j.date, USD: j.rates.JPY / j.rates.USD, CHF: j.rates.JPY / j.rates.CHF, EUR: j.rates.JPY };
+        saveLS(LS.rates, r);
+        RATES = Object.assign({}, r, { live: true });
+        renderRateLine();
+      })
+      .catch(() => {});
+  }
+
+  // ---------- 設定（レベル・ふりがな・音） ----------
+  let LV = loadLS(LS.lv, 1) === 2 ? 2 : 1;
+  let RUBY = loadLS(LS.ruby, true) !== false;
+  let SOUND = loadLS(LS.sound, true) !== false;
+
+  // 相場が無いときは為替連動の問題を出さない（ビルド時の相場を埋めてあるので通常は全問出る）
+  function pool() { return BANK.filter(q => (LV === 2 || q.lv === 1) && (!q.fx || hasRate(q.fx.cur))); }
+
+  function applyRuby() {
+    document.documentElement.classList.toggle("no-ruby", !RUBY);
+    $("btnRuby").setAttribute("aria-pressed", RUBY ? "true" : "false");
+  }
+  function applySound() {
+    $("btnSound").setAttribute("aria-pressed", SOUND ? "true" : "false");
+    $("soundIcon").setAttribute("href", SOUND ? "#ic-sound" : "#ic-mute");
+    $("soundLabel").textContent = SOUND ? "おと" : "おと なし";
+  }
+  $("btnRuby").addEventListener("click", () => { RUBY = !RUBY; saveLS(LS.ruby, RUBY); applyRuby(); });
+  $("btnSound").addEventListener("click", () => { SOUND = !SOUND; saveLS(LS.sound, SOUND); applySound(); if (SOUND) sfx(true); });
+  document.querySelectorAll(".level__btn").forEach(b => b.addEventListener("click", () => {
+    LV = Number(b.dataset.lv) === 2 ? 2 : 1; saveLS(LS.lv, LV); renderStart();
+  }));
+
+  // ---------- 出題 ----------
+  // まだ出していない問題を優先して10問選ぶ（レベルで絞ったプールの中から）
+  function pick() {
+    const P = pool();
+    let seen = loadLS(LS.seen, []);
+    if (!Array.isArray(seen)) seen = [];
+    const seenSet = new Set(seen);
+    let chosen = shuffle(P.filter(q => !seenSet.has(q.id))).slice(0, N);
+    if (chosen.length < N) {
+      const rest = shuffle(P.filter(q => seenSet.has(q.id) && !chosen.includes(q)));
+      chosen = chosen.concat(rest.slice(0, N - chosen.length));
+      seen = seen.filter(id => !P.some(q => q.id === id)); // このプールは一巡したのでリセット
+    }
+    saveLS(LS.seen, seen.concat(chosen.map(q => q.id)));
+    return chosen;
+  }
+
+  let S = null; // { qs, order: [[..4]], i, ans: [{picked(元の添字), ok}] }
+
+  function show(id) {
+    ["start", "quiz", "result"].forEach(s => { $(s).hidden = (s !== id); });
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  }
+
+  function renderStart() {
+    const P = pool();
+    $("poolCount").textContent = P.length;
+    $("buildDate").textContent = BUILD || "—";
+    document.querySelectorAll(".level__btn").forEach(b => b.classList.toggle("is-on", Number(b.dataset.lv) === LV));
+    const counts = {};
+    P.forEach(q => { counts[q.cat] = (counts[q.cat] || 0) + 1; });
+    $("catList").innerHTML = Object.keys(CATS).filter(c => counts[c]).map(c =>
+      `<li>${icon(c)}<span>${CATS[c]}</span><span class="n">${counts[c]}</span></li>`).join("");
+    renderRateLine();
+    const hist = loadLS(LS.hist, []);
+    if (Array.isArray(hist) && hist.length) {
+      const last = hist[hist.length - 1];
+      const best = Math.max(...hist.map(h => h.score));
+      $("lastScore").textContent = `まえは ${last.score}てん（${last.correct}／${N}もん）　じこベスト ${best}てん　ちょうせん ${hist.length}回`;
+      $("lastScore").hidden = false;
+    } else {
+      $("lastScore").hidden = true;
+    }
+  }
+
+  function renderProgress() {
+    $("progress").innerHTML = Array.from({ length: N }, (_, k) => {
+      let cls = "";
+      if (k < S.i || (k === S.i && S.ans[k])) cls = S.ans[k].ok ? "is-ok" : "is-ng";
+      else if (k === S.i) cls = "is-now";
+      return `<span class="${cls}"></span>`;
+    }).join("");
+  }
+
+  function renderQuestion() {
+    const q = S.qs[S.i];
+    const order = S.order[S.i];
+    renderProgress();
+    $("qNum").innerHTML = `だい<b>${S.i + 1}</b>もん`;
+    $("qCat").innerHTML = `${icon(q.cat)}<span>${CATS[q.cat] || ""}</span>`;
+    $("qText").innerHTML = rb(q.q);
+    $("choices").innerHTML = order.map((orig, k) =>
+      `<li><button class="choice" type="button" data-k="${k}"><span class="choice__n">${NUM[k]}</span><span class="choice__t">${rb(q.c[orig])}</span><span class="choice__m"></span></button></li>`).join("");
+    $("choices").querySelectorAll(".choice").forEach(b => b.addEventListener("click", onAnswer));
+    $("verdict").hidden = true;
+    $("verdict").classList.remove("is-ok", "is-ng");
+    $("btnNext").textContent = (S.i === N - 1) ? "けっかを 見る" : "つぎの もんだいへ";
+  }
+
+  function onAnswer(ev) {
+    const k = Number(ev.currentTarget.dataset.k);
+    const q = S.qs[S.i];
+    const order = S.order[S.i];
+    const picked = order[k];
+    const ok = (picked === q.a);
+    const kAns = order.indexOf(q.a);
+    S.ans[S.i] = { picked, ok };
+    $("choices").querySelectorAll(".choice").forEach((b, idx) => {
+      b.disabled = true;
+      if (idx === kAns) { b.classList.add("is-correct"); b.querySelector(".choice__m").textContent = "○"; }
+      else if (idx === k) { b.classList.add("is-wrong"); b.querySelector(".choice__m").textContent = "×"; }
+      else b.classList.add("is-dim");
+    });
+    const v = $("verdict");
+    v.classList.add(ok ? "is-ok" : "is-ng");
+    $("markMaru").toggleAttribute("hidden", !ok);
+    $("markBatsu").toggleAttribute("hidden", ok);
+    redrawMarks();
+    $("vWord").textContent = ok ? "せいかい！" : "ざんねん…";
+    $("vAns").innerHTML = ok
+      ? `こたえは <span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>`
+      : `こたえは <span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>　（えらんだのは ${NUM[k]}）`;
+    $("vExp").innerHTML = rb(q.e.split("\n").slice(1).join("\n"));
+    v.hidden = false;
+    renderProgress();
+    sfx(ok);
+    setTimeout(() => v.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }), 30);
+  }
+
+  function redrawMarks() {
+    $("verdict").querySelectorAll(".mark :is(circle, line)").forEach(s => { s.style.animation = "none"; void s.getBoundingClientRect(); s.style.animation = ""; });
+  }
+
+  function next() {
+    if (S.i < N - 1) { S.i++; renderQuestion(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); }
+    else finish();
+  }
+
+  function rank(score) {
+    if (score === 100) return { stamp: "パーフェクト", stars: 3, ng: false, face: "#coin-wow",
+      msg: "パーフェクト！ きみは「お金はかせ」だ。おうちの人や友だちにも、今日しったことを教えてあげよう。" };
+    if (score >= 70) return { stamp: "お金はかせ", stars: 2, ng: false, face: "#coin-wow",
+      msg: "すごい！ お金のことをよく知っているね。まちがえたもんだいは、下のかいせつを読んでおくと、つぎはパーフェクトがねらえるよ。" };
+    if (score >= 40) return { stamp: "けんきゅうちゅう", stars: 1, ng: false, face: "#coin-face",
+      msg: "いいちょうし！ 知らなかったことを知るのが、お金にくわしくなるいちばんの近道。かいせつを読んだら、もういちどちょうせんしてみよう。" };
+    return { stamp: "つぎは がんばろう", stars: 0, ng: true, face: "#coin-hmm",
+      msg: "だいじょうぶ！ 今日はじめて知ったことがたくさんあったね。下の ×のもんだいをひらいて、こたえとかいせつを読んでからもういちどやってみよう。" };
+  }
+
+  function finish() {
+    const correct = S.ans.filter(a => a && a.ok).length;
+    const score = Math.round(correct * (100 / N));
+    const r = rank(score);
+    $("scoreNum").textContent = score;
+    $("scoreSub").textContent = `${N}もん中 ${correct}もん せいかい`;
+    $("stars").innerHTML = [0, 1, 2].map(i => `<svg class="${i < r.stars ? "on" : ""}"><use href="#star"></use></svg>`).join("");
+    $("resultFace").setAttribute("href", r.face);
+    const st = $("stamp");
+    st.classList.toggle("is-ng", r.ng);
+    st.textContent = r.stamp;
+    $("resultLine").textContent = r.msg;
+
+    const per = {};
+    S.qs.forEach((q, k) => {
+      per[q.cat] = per[q.cat] || { n: 0, ok: 0 };
+      per[q.cat].n++; if (S.ans[k].ok) per[q.cat].ok++;
+    });
+    $("catBody").innerHTML = Object.keys(CATS).filter(c => per[c]).map(c => {
+      const p = per[c]; const pct = Math.round(p.ok / p.n * 100);
+      return `<tr><td>${icon(c)}${CATS[c]}</td><td>${p.n}もん</td><td>${p.ok}もん<span class="bar"><i style="width:${pct}%"></i></span></td></tr>`;
+    }).join("");
+
+    $("review").innerHTML = S.qs.map((q, k) => {
+      const a = S.ans[k];
+      const order = S.order[k];
+      const kAns = order.indexOf(q.a);
+      const kPicked = order.indexOf(a.picked);
+      return `<li><details>
+        <summary><span class="r__n">${k + 1}</span><span class="r__m ${a.ok ? "ok" : "ng"}">${a.ok ? "○" : "×"}</span><span class="r__t">${rb(plain(q.q))}<small>${esc(CATS[q.cat] || "")}　${esc(q.src)}</small></span></summary>
+        <div class="r__body">
+          <p class="lab">もんだい</p><p>${rb(q.q)}</p>
+          <p class="lab">せんたくし</p>${order.map((orig, i) => `<p class="${i === kAns ? "right" : (i === kPicked ? "yours" : "")}">${NUM[i]} ${rb(q.c[orig])}</p>`).join("")}
+          <p class="lab">こたえ</p><p><span class="right">${NUM[kAns]} ${rb(q.c[q.a])}</span>${a.ok ? "" : `　えらんだのは <span class="yours">${NUM[kPicked]} ${rb(q.c[a.picked])}</span>`}</p>
+          <p class="lab">かいせつ</p><p>${rb(q.e.split("\n").slice(1).join("\n"))}</p>
+        </div></details></li>`;
+    }).join("");
+
+    const hist = loadLS(LS.hist, []);
+    const arr = Array.isArray(hist) ? hist : [];
+    arr.push({ t: Date.now(), score, correct, lv: LV });
+    saveLS(LS.hist, arr.slice(-50));
+    show("result");
+    if (correct === N) celebrate();
+  }
+
+  function start() {
+    const P = pool();
+    if (!P.length) return;
+    let picked = pick();
+    // 確認用: ?q=D01-11 のように id を付けて開くと、その問題を1問目に出す（データを直したあとの見た目チェック用）
+    const want = new URLSearchParams(location.search).get("q");
+    if (want) {
+      const hit = BANK.find(x => x.id === want);
+      if (hit) picked = [hit].concat(picked.filter(x => x.id !== want)).slice(0, N);
+    }
+    const qs = picked.map(mat);   // この10問は、開始時点の相場で固定
+    S = { qs, order: qs.map(() => shuffle([0, 1, 2, 3])), i: 0, ans: [] };
+    renderQuestion();
+    show("quiz");
+  }
+
+  $("btnStart").addEventListener("click", start);
+  $("btnAgain").addEventListener("click", () => { renderStart(); start(); });
+  $("btnHome").addEventListener("click", () => { renderStart(); show("start"); });
+  $("btnNext").addEventListener("click", next);
+  document.addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if ($("quiz").hidden) return;
+    if (!$("verdict").hidden) { if (e.key === "Enter" || e.key === " ") { if (document.activeElement === $("btnNext")) return; e.preventDefault(); next(); } return; }
+    const n = "1234".indexOf(e.key);
+    if (n >= 0) { const b = $("choices").querySelectorAll(".choice")[n]; if (b && !b.disabled) b.click(); }
+  });
+
+  // ---------- 音（Web Audioで合成。音声ファイル不要） ----------
+  let actx = null;
+  function ctx() {
+    try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); return actx; } catch (e) { return null; }
+  }
+  function tone(freq, t0, dur, type, gain) {
+    const c = ctx(); if (!c) return;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type || "sine"; o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gain || 0.18, t0 + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.05);
+  }
+  function sfx(ok) {
+    if (!SOUND) return;
+    const c = ctx(); if (!c) return;
+    const t = c.currentTime;
+    if (ok) { tone(880, t, 0.14); tone(1318, t + 0.14, 0.26); }
+    else { tone(196, t, 0.16, "square", 0.08); tone(147, t + 0.2, 0.3, "square", 0.08); }
+  }
+  // 満点のクラッカー
+  function pop(delayMs) {
+    const c = ctx(); if (!c) return;
+    const t0 = c.currentTime + delayMs / 1000;
+    const len = Math.floor(c.sampleRate * 0.28);
+    const buf = c.createBuffer(1, len, c.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 7);
+    const noise = c.createBufferSource(); noise.buffer = buf;
+    const band = c.createBiquadFilter(); band.type = "bandpass"; band.frequency.value = 1600; band.Q.value = 0.6;
+    const ng = c.createGain(); ng.gain.value = 0.3;
+    noise.connect(band).connect(ng).connect(c.destination); noise.start(t0);
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = "sine"; o.frequency.setValueAtTime(220, t0); o.frequency.exponentialRampToValueAtTime(55, t0 + 0.12);
+    g.gain.setValueAtTime(0.3, t0); g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.16);
+    o.connect(g).connect(c.destination); o.start(t0); o.stop(t0 + 0.18);
+  }
+  const COLORS = ["#f6b93b", "#ef5b70", "#3d8bdc", "#4fbd85", "#f9a8b8", "#ffffff"];
+  const canvas = $("confetti");
+  function celebrate() {
+    if (SOUND) { pop(0); pop(150); }
+    if (!reduceMotion) burst();
+  }
+  function burst() {
+    const cx = canvas.getContext("2d");
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth, h = window.innerHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    canvas.hidden = false;
+    const bits = [];
+    function shoot(ox, oy, angle) {
+      for (let i = 0; i < 70; i++) {
+        const a = angle + (Math.random() - 0.5) * 0.8, sp = 13 + Math.random() * 15;
+        bits.push({ x: ox, y: oy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, w: 5 + Math.random() * 7, h: 8 + Math.random() * 8, spin: Math.random() * Math.PI * 2, vs: (Math.random() - 0.5) * 0.4, color: COLORS[(Math.random() * COLORS.length) | 0], life: 1 });
+      }
+    }
+    shoot(w * 0.06, h * 0.94, -Math.PI / 3.1);
+    setTimeout(() => shoot(w * 0.94, h * 0.94, -Math.PI + Math.PI / 3.1), 140);
+    let last = performance.now();
+    (function frame(now) {
+      const dt = Math.min((now - last) / 16.67, 2.5); last = now;
+      cx.clearRect(0, 0, w, h);
+      for (let i = bits.length - 1; i >= 0; i--) {
+        const b = bits[i];
+        b.vy += 0.42 * dt; b.vx *= Math.pow(0.99, dt); b.vy *= Math.pow(0.995, dt);
+        b.x += b.vx * dt; b.y += b.vy * dt; b.spin += b.vs * dt;
+        if (b.y > h * 0.62) b.life -= 0.012 * dt;
+        if (b.life <= 0 || b.y > h + 60) { bits.splice(i, 1); continue; }
+        cx.save(); cx.translate(b.x, b.y); cx.rotate(b.spin); cx.scale(Math.cos(b.spin * 1.7), 1);
+        cx.globalAlpha = Math.max(b.life, 0); cx.fillStyle = b.color; cx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); cx.restore();
+      }
+      if (bits.length) requestAnimationFrame(frame); else { cx.clearRect(0, 0, w, h); canvas.hidden = true; }
+    })(last);
+  }
+
+  applyRuby();
+  applySound();
+  renderStart();
+  liveRates();
+  if (new URLSearchParams(location.search).get("q")) start();
+</script>
+<script>
+/* PWA: GitHub Pages上でのみ有効（file:// や claude.ai では何もしない）。 */
+if ('serviceWorker' in navigator && location.protocol === 'https:' && /\.github\.io$/.test(location.hostname)) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>
