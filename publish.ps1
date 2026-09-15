@@ -14,6 +14,7 @@ $build = Join-Path (Split-Path -Parent $root) "_build\お金のクイズ大会"
 python (Join-Path $build "fetch_rates.py")
 python (Join-Path $build "merge.py") --write
 if ($LASTEXITCODE -ne 0) { throw "merge.py failed" }
+python (Join-Path $build "export_csv.py")     # 問題一覧CSV（quiz-list.csv も更新。スプレッドシートが読みに来る）
 
 Set-Location $root
 git add -A
