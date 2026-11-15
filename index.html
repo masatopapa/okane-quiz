@@ -278,6 +278,11 @@
   }
   .homehow:active { background: var(--coin-soft); }
   .homehow[hidden] { display: none; }
+  /* 置き場所: PC（横760px以上）は「ぜんぶで 〇もん」の右の空き、スマホはスタートボタンの下（2026-11-16 本人指示） */
+  .start__countrow { display: flex; align-items: center; gap: .4rem 1.1rem; flex-wrap: wrap; }
+  .homehow--pc { margin: 0; }
+  @media (min-width: 760px) { .homehow--sp { display: none; } }
+  @media (max-width: 759.98px) { .homehow--pc { display: none; } }
   .home-ov {
     position: fixed; inset: 0; z-index: 60; overflow-y: auto;
     display: flex; align-items: flex-start; justify-content: center;
@@ -530,7 +535,10 @@
     <div class="start__hero">
       <div>
         <p class="eyebrow" data-t="total">もんだいは ぜんぶで</p>
-        <p class="start__count"><span id="poolCount">0</span><span class="unit" data-t="mon">もん</span></p>
+        <div class="start__countrow">
+          <p class="start__count"><span id="poolCount">0</span><span class="unit" data-t="mon">もん</span></p>
+          <button class="homehow homehow--pc" type="button" data-t="homeHow" hidden></button>
+        </div>
         <div class="level" role="group" aria-label="レベル">
           <button class="level__btn is-on" type="button" data-lv="1" data-t="lv1">しょうがくせい</button>
           <button class="level__btn" type="button" data-lv="2" data-t="lv2">ぜんぶ（おとなの もんだいも）</button>
@@ -558,7 +566,7 @@
     <p class="start__fx" id="fxLine" hidden></p>
     <p class="start__last" id="lastScore" hidden></p>
     <button id="btnStart" class="btn btn--primary" type="button" data-t="start">10もんに ちょうせん！</button>
-    <button id="btnHomeHow" class="homehow" type="button" data-t="homeHow" hidden></button>
+    <button class="homehow homehow--sp" type="button" data-t="homeHow" hidden></button>
     <div class="credit">
       <div class="credit__main">
         <p class="credit__note" data-t="noteStart">まだ出ていないもんだいからえらぶので、くりかえすと全部のもんだいに出会えます（このスマホ・パソコンに記録）。もんだいデータ <span id="buildDate"></span> 版</p>
@@ -821,7 +829,7 @@ const IMG_BASE = /*__IMGBASE__*/"img/";   // イラストの置き場所（Artif
     noteResult: ["てんすうは このスマホ・パソコンに記録されて、スタート画面の「まえは 〇てん」「じこベスト」に出ます。", "点数はこのスマホ・パソコンに記録され、スタート画面の「前回 〇点」「自己ベスト」に出ます。"],
     foot:       ["もんだいは、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。かいせつもそのスライドをもとに書いています。",
                  "問題は、マネリテDAOが学校やイベントの「お金の授業」で使ったクイズ（Canvaのスライド）から作りました。解説もそのスライドをもとに書いています。"],
-    daoPdf:     ["📄 しょうかいPDF", "📄 紹介PDF"],
+    daoPdf:     ["📄 マネリテDAOの紹介", "📄 マネリテDAOの紹介"],   // 2026-11-16 本人指示で両モードともこの表記
     homeHow:    ["📲 ホームがめんに ついかする ほうほう", "📲 ホーム画面に追加する方法"],
     homeTtl:    ["ホームがめんに ついか", "ホーム画面に追加"],
     homeLead:   ["アイコンから すぐに ひらけるように なるよ。", "アイコンから、すぐに開けるようになります。"],
@@ -1104,14 +1112,18 @@ const IMG_BASE = /*__IMGBASE__*/"img/";   // イラストの置き場所（Artif
   // ---------- ホーム画面に追加する方法（2026-11-16） ----------
   // GitHub Pages で開いたときだけ出す（下の service worker 登録と同じ条件。file:// や claude.ai の予備版では出さない）。
   // ホーム画面のアイコンから開いているときも出さない。
+  // ボタンは2つ（PC用＝もんだい数の右／スマホ用＝スタートボタンの下）。どちらを見せるかはCSSの画面幅で決める。
   (function () {
-    const btn = $("btnHomeHow"), ov = $("homeOv");
+    const btns = document.querySelectorAll(".homehow"), ov = $("homeOv");
     const onPages = location.protocol === "https:" && /\.github\.io$/.test(location.hostname);
     const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
     if (!onPages || standalone) return;
-    btn.hidden = false;
-    const close = () => { ov.hidden = true; btn.focus(); };
-    btn.addEventListener("click", () => { ov.hidden = false; ov.scrollTop = 0; $("homeClose").focus(); });
+    let opener = null;
+    const close = () => { ov.hidden = true; if (opener) opener.focus(); };
+    btns.forEach(b => {
+      b.hidden = false;
+      b.addEventListener("click", () => { opener = b; ov.hidden = false; ov.scrollTop = 0; $("homeClose").focus(); });
+    });
     $("homeClose").addEventListener("click", close);
     ov.addEventListener("click", (e) => { if (e.target === ov) close(); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !ov.hidden) close(); });
